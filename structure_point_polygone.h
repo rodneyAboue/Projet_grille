@@ -2,95 +2,88 @@
 
 //---------- POINTS ----------
 
-//int id_point = 1;
-
-typedef struct st_liste_point liste_point;
 typedef struct st_point point;
+typedef struct st_liste_polygone liste_polygone;
 
-struct st_liste_point{
-	point** liste;
-	int nb_point;
-};
-
-struct st_point{
+typedef struct st_point{
 	int id;
-	float x;
-	float y;
+	double x;
+	double y;
 	char etat;
 
-	liste_point voisins;
-};
+	point* next;
+} point;
 
-
-//---------- POLYOGNES ----------
-
-//int id_polygone = 1;
-
-typedef struct st_polygone{
-	int id;
-	
-	liste_point sommets;
-
-	char etat;
-	
-} polygone;
-
-
-typedef struct st_liste_polygones{
-	polygone** liste;
-	int nb_polygone;
-} liste_polygone;
-
+typedef struct st_liste_polygone{
+	point* polygone;
+	liste_polygone* next;
+}liste_polygone;
 
 //-------------------- FONCTIONS ASSOCIEES --------------------
 
-//---------- POINTS ----------
+//---------- POLYGONE ----------
 
-void init_point(point* p);
+liste_polygone* init_liste_polygone();
+// initialise une liste de polygone et la retourne
+
+void add_polygone_liste(liste_polygone* liste, point* p);
+//ajoute un polygone à une liste de polygones
+
+void afficher_liste_polygone(liste_polygone* lp);
+//affiche une liste de polygones
+
+void delete_liste_polygone(liste_polygone *lp);
+// supprime tous les elements d'une liste de polygones
+
+//-----------------------POINT-------------------------------------
+
 //initialise un point 
-//lui donne un id unique et alloue la liste des voisins
-//renvoie le pointeur passé en paramètre 
+//lui donne un id 
+//renvoie un pointeur vers le point alloué
+point* init_point();
 
-void delete_point(point* p);
-//supprime un point
-
+//affiche un point sous le format : 
+//- id < x,y >\n
 void afficher_point(point *p);
-//affiche un point
 
 
+//compte le nombre de points d'une liste de points et retourne ce nombre
+// Il faut appeler compte_point-liste et non l'autre
+int count_point_liste(point* liste);
+int compte_point_liste_2(point* liste, int nb_pts);
 
-//---------- LISTE DE POINTS ----------
+// renvoie e pointeur du point
+// renvoie -1 si le point n'est pas trouve
+point* search_point_liste_id(point* liste, int id); // inutile ?? 
 
-void init_liste_point(liste_point* l);
-//initialise une liste de points
-//alloue sa composante liste
-//renvoie le pointeur passé en paramètre
-
-int contient_point_liste(liste_point* l, point* p); 
 // renvoie l'index du point
 // renvoie -1 si le point n'est pas trouve
+point* search_point_liste_coords(point* liste, double x, double y);
 
-int add_point_liste(liste_point* l, point* v);
 //ajoute un point à une liste de points
 //revoie l'id du point ajouté 
 // ou -1 si le point est déjà présent dans la liste
-// ou -2 si la liste est pleine
+int add_point_liste(point* liste, double x, double y);
 
-int remove_point_liste(liste_point* l, point* v);
+
 //retire un point à une liste de points
 //revoie l'id du point retiré 
 // ou -1 si le point n'est pas présent dans la liste
+int remove_point_liste(point* liste, double x, double y);
+	
+	
 
-void delete_liste_point(liste_point* l);
 //supprime une liste de points et libère sa composante liste
+void delete_liste_point(point* liste);
 
-void afficher_liste_point(liste_point* l);
 //affiche une liste de points
+void afficher_liste_point(point* liste);
 
 
 
 
-//---------- POLYGONE ----------
+/*
+
 
 //initialise un polygone et lui donne un id unique
 //renvoie le pointeur passé en paramètre
@@ -128,27 +121,31 @@ void afficher_polygone(polygone* py);
 
 //initialise une liste de polygones
 //renvoie le pointeur passé en paramètre
-void init_liste_polygone(liste_polygone* l);
+void init_liste_polygone(liste_polygone* ptr_l);
+
+//compte le nombre d'éléments d'une liste de polygones
+//renvoie le nombre de polygones présents dans la liste
+int compter_polygone_liste(liste_polygone* ptr_l);
 
 //teste la présence d'un polygone dans une liste
 //renvoie l'index du polygone si il est présent
 //-1 sinon
-int contient_polygone_liste(liste_polygone* l, polygone* py);
+int contient_polygone_liste(liste_polygone* ptr_l, polygone* py);
 
 
 //ajoute un polygone à une liste de polygones
 //revoie la taille de la liste après opération
 // ou -1 si le polygone est déjà présent dans la liste
 // ou -2 si la liste est pleine
-int add_polygone_liste(liste_polygone* l, polygone* py);
+int add_polygone_liste(liste_polygone* ptr_l, polygone* py);
 
 //retire un polygone à une liste de polygones
 //revoie la taille de la liste après opération
 // ou -1 si le polygone est n'est pas présent dans la liste
-int remove_polygone_liste(liste_polygone* l, polygone* py);
+int remove_polygone_liste(liste_polygone* ptr_l, polygone* py);
 
 //supprime une liste de polygone et libère sa composante liste
-void delete_liste_polygone(liste_polygone* l);
+void delete_liste_polygone(liste_polygone* ptr_l);
 
 //affiche une liste de polygones sous la forme : 
 //DEBUT Liste de polygones 
@@ -162,4 +159,7 @@ void delete_liste_polygone(liste_polygone* l);
 //Index : 2
 //etc...
 //FIN Liste de polygone
-void afficher_liste_polygone(liste_polygone* l);
+void afficher_liste_polygone(liste_polygone* ptr_l);
+
+
+*/
