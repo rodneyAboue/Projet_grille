@@ -5,6 +5,13 @@ polygone * creerPoly(point * unSommet){
 	lePoly->nbPoint = 0;
 	lePoly->sommetPoly = unSommet;
 	lePoly->listePointPoly=(point**)malloc(lePoly->nbPoint*sizeof(point*));
+	lePoly->type = 's';
+	return lePoly;
+}
+
+polygone* creerPolyInterdit(point* unSommet){
+	polygone * lePoly = creerPoly(unSommet);
+	lePoly->type = 'i';
 	return lePoly;
 }
 
@@ -136,6 +143,20 @@ void gen_point(polygone* lePolygone, point* pointDepart, float distanceVoisin){
 			lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 			gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
+		}
+	}
+}
+
+void delete_point(polygone* lePoly, polygone* lePolyInterdit){
+	for(int i = 0; i< lePoly->nbPoint; i++){
+		if(pointIsInPoly(lePoly->listePointPoly[i], lePolyInterdit) == true){
+			lePolyInterdit->listePointPoly = (point**)realloc(lePolyInterdit->listePointPoly, ++(lePolyInterdit->nbPoint)*sizeof(point*));
+			lePolyInterdit->listePointPoly[lePolyInterdit->nbPoint-1] = lePoly->listePointPoly[i];
+			for(int j = i; j < lePoly->nbPoint -1; j++){
+				lePoly->listePointPoly[j] = lePoly->listePointPoly[j+1];
+			}
+			lePoly->listePointPoly = (point**)realloc(lePoly->listePointPoly, --(lePoly->nbPoint)*sizeof(point*));
+			i--;
 		}
 	}
 }

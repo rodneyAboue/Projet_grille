@@ -10,17 +10,30 @@ typedef struct{
 	point ** listePointPoly;
 	//Nombre de point dans le poly hors sommet (nécessaire pour parcourir la liste)
 	int nbPoint;
+	//Permet de savoir si c'est un polygone standart ou interdit;
+	// s -> standart, i -> interdit
+	char type;
 }polygone;
 
 /*
 * creerPoly();
-* Créér la structure polygone à partir d'un sommet;
+* Créer la structure polygone à partir d'un sommet;
 * Argument:
 * Un sommet du polygone
 * Return:
 * Une structure polygone
 */
 polygone* creerPoly(point *);
+
+/*
+* creerPolyInterdit();
+* Créer un polygone dit "interdit" qui va pouvoir stocker les points interdit au besoin;
+* Argument:
+* Un sommet du polygone
+* Return:
+* Une structure polygone
+*/
+polygone* creerPolyInterdit(point *);
 
 /*
 * pointIsInPoly();
@@ -51,3 +64,12 @@ bool gen_point_polygone(polygone*, point*, float);
 * Rien, la liste de point du polygone est modifié, il n'est donc pas nécessaire de renvoyer celui-ci
 */
 void gen_point(polygone*, point*, float);
+
+/*
+* Retire les points d'un polygone dit interdit à un autre polygone et les stocks
+* Argument:
+* Le polygone interdit
+* Return:
+* Rien
+*/
+void delete_point(polygone*, polygone*);
