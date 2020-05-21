@@ -16,18 +16,18 @@ polygone* creerPolyInterdit(point* unSommet){
 }
 
 // Vérifier que le point se trouve dans le polygone
-bool pointIsInPoly(point* lePoint, polygone* lePolygone){
+bool pointIsInPoly(point* lePoint, point* lePolygone){
 	bool isInside = false;
 
 	int minX, minY, maxX, maxY;
-	minX = lePolygone->sommetPoly->x;
-	minY = lePolygone->sommetPoly->y;
-	maxX = minX;
-	maxY = minY;
+	minX = lePolygone->x; 
+	minY = lePolygone->y;
+	maxX = minX; 
+	maxY = minY; 
 
 	//Recuperer le maximum et minimum des coordonnées x/y
-	point* sommetSuivant = lePolygone->sommetPoly->next;
-	while(sommetSuivant->x != lePolygone->sommetPoly->x && sommetSuivant->x != lePolygone->sommetPoly->y){
+	point* sommetSuivant = lePolygone->next;
+	while(sommetSuivant->id != lePolygone->id){ 
 		if(sommetSuivant->x < minX){
 			minX = sommetSuivant->x;
 		}else if(sommetSuivant->x > maxX){
@@ -47,14 +47,20 @@ bool pointIsInPoly(point* lePoint, polygone* lePolygone){
 		return false;
 	}
 
-	//Vérifier que le point se trouve dans le polygone en faisant le tour de celui-ci
-	int j = lePolygone->nbPoint;
-	for(int i = 0; i < lePolygone->nbPoint; j = i++){
-		if((lePolygone->listePointPoly[i]->y > lePoint->y) != (lePolygone->listePointPoly[j]->y > lePoint->y)
+	
+
+	point* sommet_courant = lePolygone
+	point* sommet_suivant = lePolygone->next;
+
+	while(sommet_suivant->id != lePolygone->id){
+		if((sommet_suivant->y > lePoint->y) != (sommet_courant->y > lePoint->y)
 		&&
-		lePoint->x < (((lePolygone->listePointPoly[j]->x - lePolygone->listePointPoly[i]->x)*(lePoint->y - lePolygone->listePointPoly[i]->y)) / ((lePolygone->listePointPoly[j]->y - lePolygone->listePointPoly[i]->y) + lePolygone->listePointPoly[i]->x))){
+		lePoint->x < (((sommet_courant->x - sommet_suivant->x)*(lePoint->y - sommet_suivant->y)) / ((sommet_courant->y - sommet_suivant->y) + sommet_suivant->x))){
 			isInside = !isInside;
 		}
+
+		sommet_courant = sommet_suivant;
+		sommet_suivant = sommet_suivant->next;
 	}
 	return isInside;
 
