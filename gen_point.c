@@ -61,6 +61,256 @@ bool pointIsInPoly(point* lePoint, polygone* lePolygone){
 
 }
 
+
+
+// variable globale distanceVoisin
+
+// Vérifier le point de départ et lancer ensuite la création des points
+bool gen_point_polygone_TEMPORAIRE(polygone* lePolygone, point* pointDepart){
+	if(pointIsInPoly(pointDepart, lePolygone) == false){
+		return false;
+	}
+	lePolygone->listePointPoly = (point **) realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+	lePolygone->listePointPoly[0] = pointDepart;
+	gen_point(lePolygone, pointDepart,false,true,true,true,true);
+	return true;
+}
+
+// Générer l'ensemble des points à partir d'un point de départ
+void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_sur_arrete,bool explorer_nord, bool explorer_sud, bool explorer_ouest, bool explorer_est  ){ 
+	point* nouveauPoint = init_point();
+	point* nouveauPoint2 = init_point();
+
+	bool nord;
+	bool sud;
+	bool ouest;
+	bool sud;
+	bool cote_proche = false;
+
+	if(explorer_ouest){
+
+		nouveauPoint->x = pointDepart->x - distanceVoisin;
+		nouveauPoint->y = pointDepart->y;
+
+
+		if(pointIsInPoly(nouveauPoint, lePolygone) == false && !point_sur_arrete){
+			int i = 0;
+			bool pointOutsidePoly = false;
+			int diviseur = 2;
+
+
+			// recherche dichotomique du point qui est situé sur l'arrête
+			while(i < 5){
+				if(pointOutsidePoly)
+					nouveauPoint->x = pointDepart->x + distanceVoisin/diviseur;
+				else
+					nouveauPoint->x = pointDepart->x - distanceVoisin/diviseur;
+
+				diviseur *= 2;
+				pointOutsidePoly = !pointIsInPoly(nouveauPoint, lePolygone);
+				i++;
+			}	
+			if(pointIsInPoly(nouveauPoint, lePolygone) == true)
+				cote_proche = true;
+
+			nouveauPoint2->x = pointDepart->x;
+			nouveauPoint2->y = pointDepart->y  + distanceVoisin;
+
+			nord = pointIsInPoly(nouveauPoint2, lePolygone);
+
+			nouveauPoint2->x = pointDepart->x;
+			nouveauPoint2->y = pointDepart->y - distanceVoisin;
+
+			sud = pointIsInPoly(nouveauPoint2, lePolygone);
+		}
+		if(pointIsInPoly(nouveauPoint, lePolygone) == true){
+			bool existant = false;
+			for(int i = 0; i < lePolygone->nbPoint && existant == false; i++){
+				if(nouveauPoint->x == lePolygone->listePointPoly[i]->x && nouveauPoint->y == lePolygone->listePointPoly[i]->y){
+					existant = true;
+				}
+			}
+			if(!existant){
+				lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+				lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
+				
+				gen_point(lePolygone, nouveauPoint,cote_proche,nord&&cote_proche || !cote_proche,sud&&cote_proche || !cote_proche,!cote_proche,false);
+				
+				nouveauPoint = init_point();
+			}
+		}
+	}
+	if(explorer_est){
+
+		nouveauPoint->x = pointDepart->x + distanceVoisin;
+		nouveauPoint->y = pointDepart->y;
+
+
+		if(pointIsInPoly(nouveauPoint, lePolygone) == false && !point_sur_arrete){
+			int i = 0;
+			bool pointOutsidePoly = false;
+			int diviseur = 2;
+
+
+			// recherche dichotomique du point qui est situé sur l'arrête
+			while(i < 5){
+				if(pointOutsidePoly)
+					nouveauPoint->x = pointDepart->x - distanceVoisin/diviseur;
+				else
+					nouveauPoint->x = pointDepart->x + distanceVoisin/diviseur;
+
+				diviseur *= 2;
+				pointOutsidePoly = !pointIsInPoly(nouveauPoint, lePolygone);
+				i++;
+			}	
+			if(pointIsInPoly(nouveauPoint, lePolygone) == true)
+				cote_proche = true;
+
+			nouveauPoint2->x = pointDepart->x;
+			nouveauPoint2->y = pointDepart->y  + distanceVoisin;
+
+			nord = pointIsInPoly(nouveauPoint2, lePolygone);
+
+			nouveauPoint2->x = pointDepart->x;
+			nouveauPoint2->y = pointDepart->y - distanceVoisin;
+
+			sud = pointIsInPoly(nouveauPoint2, lePolygone);
+		}
+		if(pointIsInPoly(nouveauPoint, lePolygone) == true){
+			bool existant = false;
+			for(int i = 0; i < lePolygone->nbPoint && existant == false; i++){
+				if(nouveauPoint->x == lePolygone->listePointPoly[i]->x && nouveauPoint->y == lePolygone->listePointPoly[i]->y){
+					existant = true;
+				}
+			}
+			if(!existant){
+				lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+				lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
+				
+				gen_point(lePolygone, nouveauPoint,cote_proche,nord&&cote_proche || !cote_proche,sud&&cote_proche || !cote_proche,false,!cote_proche);
+				
+				nouveauPoint = init_point();
+			}
+		}
+	}
+	if(explorer_nord){
+
+		nouveauPoint->x = pointDepart->x;
+		nouveauPoint->y = pointDepart->y + distanceVoisin;
+
+
+		if(pointIsInPoly(nouveauPoint, lePolygone) == false && !point_sur_arrete){
+			int i = 0;
+			bool pointOutsidePoly = false;
+			int diviseur = 2;
+
+
+			// recherche dichotomique du point qui est situé sur l'arrête
+			while(i < 5){
+				if(pointOutsidePoly)
+					nouveauPoint->y = pointDepart->y - distanceVoisin/diviseur;
+				else
+					nouveauPoint->y = pointDepart->y + distanceVoisin/diviseur;
+
+				diviseur *= 2;
+				pointOutsidePoly = !pointIsInPoly(nouveauPoint, lePolygone);
+				i++;
+			}	
+			if(pointIsInPoly(nouveauPoint, lePolygone) == true)
+				cote_proche = true;
+
+			nouveauPoint2->x = pointDepart->x - distanceVoisin;
+			nouveauPoint2->y = pointDepart->y;
+
+			ouest = pointIsInPoly(nouveauPoint2, lePolygone);
+
+			nouveauPoint2->x = pointDepart->x + distanceVoisin;
+			nouveauPoint2->y = pointDepart->y;
+
+			est = pointIsInPoly(nouveauPoint2, lePolygone);
+		}
+		if(pointIsInPoly(nouveauPoint, lePolygone) == true){
+			bool existant = false;
+			for(int i = 0; i < lePolygone->nbPoint && existant == false; i++){
+				if(nouveauPoint->x == lePolygone->listePointPoly[i]->x && nouveauPoint->y == lePolygone->listePointPoly[i]->y){
+					existant = true;
+				}
+			}
+			if(!existant){
+				lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+				lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
+				
+				gen_point(lePolygone, nouveauPoint,cote_proche,!cote_proche,false,ouest&&cote_proche || !cote_proche,est&&cote_proche || !cote_proche);
+				
+				nouveauPoint = init_point();
+			}
+		}
+	}
+	if(explorer_sud){
+
+		nouveauPoint->x = pointDepart->x;
+		nouveauPoint->y = pointDepart->y - distanceVoisin;
+
+
+		if(pointIsInPoly(nouveauPoint, lePolygone) == false && !point_sur_arrete){
+			int i = 0;
+			bool pointOutsidePoly = false;
+			int diviseur = 2;
+
+
+			// recherche dichotomique du point qui est situé sur l'arrête
+			while(i < 5){
+				if(pointOutsidePoly)
+					nouveauPoint->y = pointDepart->y + distanceVoisin/diviseur;
+				else
+					nouveauPoint->y = pointDepart->y - distanceVoisin/diviseur;
+
+				diviseur *= 2;
+				pointOutsidePoly = !pointIsInPoly(nouveauPoint, lePolygone);
+				i++;
+			}	
+			if(pointIsInPoly(nouveauPoint, lePolygone) == true)
+				cote_proche = true;
+
+			nouveauPoint2->x = pointDepart->x - distanceVoisin;
+			nouveauPoint2->y = pointDepart->y;
+
+			ouest = pointIsInPoly(nouveauPoint2, lePolygone);
+
+			nouveauPoint2->x = pointDepart->x + distanceVoisin;
+			nouveauPoint2->y = pointDepart->y;
+
+			est = pointIsInPoly(nouveauPoint2, lePolygone);
+		}
+		if(pointIsInPoly(nouveauPoint, lePolygone) == true){
+			bool existant = false;
+			for(int i = 0; i < lePolygone->nbPoint && existant == false; i++){
+				if(nouveauPoint->x == lePolygone->listePointPoly[i]->x && nouveauPoint->y == lePolygone->listePointPoly[i]->y){
+					existant = true;
+				}
+			}
+			if(!existant){
+				lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+				lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
+				
+				gen_point(lePolygone, nouveauPoint,cote_proche,false,!cote_proche,ouest&&cote_proche || !cote_proche,est&&cote_proche || !cote_proche);
+				
+				nouveauPoint = init_point();
+			}
+		}
+	}
+
+	
+		
+
+
+}
+
+
+
+
+
+
 // Vérifier le point de départ et lancer ensuite la création des points
 bool gen_point_polygone(polygone* lePolygone, point* pointDepart, float distanceVoisin, char cote, float diff){
 	if(pointIsInPoly(pointDepart, lePolygone) == false){
