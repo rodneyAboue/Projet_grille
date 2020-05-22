@@ -48,11 +48,12 @@ bool pointIsInPoly(point* lePoint, polygone* lePolygone){
 	}
 
 	//Vérifier que le point se trouve dans le polygone en faisant le tour de celui-ci
-	int j = lePolygone->nbPoint;
-	for(int i = 0; i < lePolygone->nbPoint; j = i++){
-		if((lePolygone->listePointPoly[i]->y > lePoint->y) != (lePolygone->listePointPoly[j]->y > lePoint->y)
-		&&
-		lePoint->x < (((lePolygone->listePointPoly[j]->x - lePolygone->listePointPoly[i]->x)*(lePoint->y - lePolygone->listePointPoly[i]->y)) / ((lePolygone->listePointPoly[j]->y - lePolygone->listePointPoly[i]->y) + lePolygone->listePointPoly[i]->x))){
+	point * sommet1 = lePolygone->sommetPoly;
+	point * sommet2 = sommet1->next;
+	int x = sommet1->x;
+	int y = sommet1->y;
+	for(int i = 0; i < 1 && sommet1->x != x && sommet1->y != y; i++){
+		if((sommet2->y > lePoint->y != (sommet1->y > lePoint->y) && lePoint->x < (((sommet1->x - sommet2->x)*(lePoint->y - sommet2->y))/(sommet1->y - sommet2->y) + sommet2->x))){
 			isInside = !isInside;
 		}
 	}
@@ -175,4 +176,37 @@ void delete_point2(polygone* lePoly, point* sommetPolyInterdit){
 		}
 	}
 	free(polyInterdit);
+}
+
+bool verif_Voisin(polygone* lePoly, point* depart, point* destination){
+	bool verif = true;
+	point * sommet1 = lePoly->sommetPoly;
+	point * sommet2 = sommet1->next;
+
+	//Nécessaire pour boucle
+	int x = sommet2->x;
+	int y = sommet2->y;
+	for(int w = 0; (w < 1 && sommet2->x != x && sommet2->y !=y) || !verif ; w++){
+		int a1 = (depart->y - destination->y)/ (depart->x - destination->x);
+		int b1 = (depart->y - (a1*depart->x));
+
+		int a2 = (sommet1->y - sommet2->y)/(sommet1->x - sommet2->x);
+		int b2 = (sommet1->y - (a2*sommet1->x));
+
+		if((a1 - a2) != 0){
+			int m = (b2 - b1)/(a1 - a2);
+			if(depart->x < destination->x){
+				if(depart->x < m && destination->x > m){
+					verif = !verif;
+				}
+			}else{
+				if(depart->x > m && destination->x < m){
+					verif = !verif;
+				}
+			}
+		}
+		sommet1 = sommet1->next;
+		sommet2 = sommet2->next;
+	}
+	return verif;
 }

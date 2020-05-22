@@ -84,3 +84,13 @@ void delete_point(polygone*, polygone*);
 * Rien
 */
 void delete_point2(polygone* , point*);
+
+/*
+* verif_Voisin();
+* Vérifie que 2 voisins ne sont pas séparé par une arete du polygone
+* Argument:
+* Le polygone, et les 2 points supposés voisins
+* Return:
+* Booleen indiquant si oui ou non ils sont voisins
+*/
+bool verif_Voisin(polygone*, point*, point*);
