@@ -53,7 +53,7 @@ bool pointIsInPoly(point*, polygone*);
 * Return:
 * Un booleen qui indique si la création a été effectuée.
 */
-bool gen_point_polygone(polygone*, point*, float);
+bool gen_point_polygone(polygone*, point*, float, char, float);
 
 /*
 * gen_point();
@@ -63,7 +63,7 @@ bool gen_point_polygone(polygone*, point*, float);
 * Return: 
 * Rien, la liste de point du polygone est modifié, il n'est donc pas nécessaire de renvoyer celui-ci
 */
-void gen_point(polygone*, point*, float);
+void gen_point(polygone*, point*, float, char, float);
 
 /*
 *
