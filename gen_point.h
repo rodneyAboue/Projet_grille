@@ -66,10 +66,21 @@ bool gen_point_polygone(polygone*, point*, float);
 void gen_point(polygone*, point*, float);
 
 /*
+*
 * Retire les points d'un polygone dit interdit à un autre polygone et les stocks
 * Argument:
-* Le polygone interdit
+* Le polygone interdit et le polygone contenant les points
 * Return:
 * Rien
 */
 void delete_point(polygone*, polygone*);
+
+/*
+* delete_point();
+* Retire les points d'un polygone dit interdit à un autre polygone mais ne les stocks pas
+* Argument:
+* Le polygone contenant les points et un sommet du polygone Interdit
+* Return:
+* Rien
+*/
+void delete_point2(polygone* , point*);
