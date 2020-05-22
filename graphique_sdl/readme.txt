@@ -7,7 +7,7 @@ version 1.2
 Date : 17/05/2020
 	Affichage des images et debut de la gestion des evenements
 
-version 1.2
+version 1.3
 Date : 21/05/2020
 	Affichage des images et suite de la gestion des evenements
 	Debut de la création du menu 
