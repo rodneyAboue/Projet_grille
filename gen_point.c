@@ -185,10 +185,6 @@ void delete_point_temporaire(point* lePoly, point* lePolyInterdit){
 	while(sommet_courant->id != id_premier_sommet){
 		if(pointIsInPoly(sommet_courant, lePolyInterdit) == true){
 			add_point_liste(lePolyInterdit, sommet_courant->x, sommet_courant->y);
-
-			point* sommet_courant2 = sommet_courant;
-			point* sommet_suivant2 = lePolygone->next;
-
 			remove_point_liste(lePoly, sommet_courant->x, sommet_courant->y);
 		}
 
