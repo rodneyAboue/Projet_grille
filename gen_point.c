@@ -213,9 +213,8 @@ void delete_point2(polygone* lePoly, point* sommetPolyInterdit){
 	for(int i = 0; i < lePoly->nbPoint; i++){
 		if(pointIsInPoly(lePoly->listePointPoly[i], polyInterdit) == true){
 			point* pointFree = lePoly->listePointPoly[i];
-			for(int j = i; j < lePoly->nbPoint - 1; j++){
-				lePoly->listePointPoly[j] = lePoly->listePointPoly[j+1];
-			}
+			if(i != lePoly->nbPoint - 1)
+				lePoly->listePointPoly[i] = lePoly->listePointPoly[lePoly->nbPoint - 1];
 			lePoly->listePointPoly = (point**)realloc(lePoly->listePointPoly, --(lePoly->nbPoint)*sizeof(point*));
 			i--;
 			free(pointFree);
