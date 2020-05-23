@@ -86,6 +86,10 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 	bool ouest;
 	bool sud;
 	bool cote_proche = false;
+	int i;
+	bool pointOutsidePoly;
+	int diviseur;
+	bool existant;
 
 	if(explorer_ouest){
 
@@ -94,9 +98,9 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 
 
 		if(pointIsInPoly(nouveauPoint, lePolygone) == false && !point_sur_arrete){
-			int i = 0;
-			bool pointOutsidePoly = false;
-			int diviseur = 2;
+			i = 0;
+			pointOutsidePoly = false;
+			diviseur = 2;
 
 
 			// recherche dichotomique du point qui est situé sur l'arrête
@@ -124,7 +128,7 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 			sud = pointIsInPoly(nouveauPoint2, lePolygone);
 		}
 		if(pointIsInPoly(nouveauPoint, lePolygone) == true){
-			bool existant = false;
+			existant = false;
 			for(int i = 0; i < lePolygone->nbPoint && existant == false; i++){
 				if(nouveauPoint->x == lePolygone->listePointPoly[i]->x && nouveauPoint->y == lePolygone->listePointPoly[i]->y){
 					existant = true;
@@ -147,9 +151,9 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 
 
 		if(pointIsInPoly(nouveauPoint, lePolygone) == false && !point_sur_arrete){
-			int i = 0;
-			bool pointOutsidePoly = false;
-			int diviseur = 2;
+			i = 0;
+			pointOutsidePoly = false;
+			diviseur = 2;
 
 
 			// recherche dichotomique du point qui est situé sur l'arrête
@@ -177,7 +181,7 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 			sud = pointIsInPoly(nouveauPoint2, lePolygone);
 		}
 		if(pointIsInPoly(nouveauPoint, lePolygone) == true){
-			bool existant = false;
+			existant = false;
 			for(int i = 0; i < lePolygone->nbPoint && existant == false; i++){
 				if(nouveauPoint->x == lePolygone->listePointPoly[i]->x && nouveauPoint->y == lePolygone->listePointPoly[i]->y){
 					existant = true;
@@ -200,9 +204,9 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 
 
 		if(pointIsInPoly(nouveauPoint, lePolygone) == false && !point_sur_arrete){
-			int i = 0;
-			bool pointOutsidePoly = false;
-			int diviseur = 2;
+			i = 0;
+			pointOutsidePoly = false;
+			diviseur = 2;
 
 
 			// recherche dichotomique du point qui est situé sur l'arrête
@@ -230,7 +234,7 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 			est = pointIsInPoly(nouveauPoint2, lePolygone);
 		}
 		if(pointIsInPoly(nouveauPoint, lePolygone) == true){
-			bool existant = false;
+			existant = false;
 			for(int i = 0; i < lePolygone->nbPoint && existant == false; i++){
 				if(nouveauPoint->x == lePolygone->listePointPoly[i]->x && nouveauPoint->y == lePolygone->listePointPoly[i]->y){
 					existant = true;
@@ -253,9 +257,9 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 
 
 		if(pointIsInPoly(nouveauPoint, lePolygone) == false && !point_sur_arrete){
-			int i = 0;
-			bool pointOutsidePoly = false;
-			int diviseur = 2;
+			i = 0;
+			pointOutsidePoly = false;
+			diviseur = 2;
 
 
 			// recherche dichotomique du point qui est situé sur l'arrête
@@ -283,7 +287,7 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 			est = pointIsInPoly(nouveauPoint2, lePolygone);
 		}
 		if(pointIsInPoly(nouveauPoint, lePolygone) == true){
-			bool existant = false;
+			existant = false;
 			for(int i = 0; i < lePolygone->nbPoint && existant == false; i++){
 				if(nouveauPoint->x == lePolygone->listePointPoly[i]->x && nouveauPoint->y == lePolygone->listePointPoly[i]->y){
 					existant = true;
