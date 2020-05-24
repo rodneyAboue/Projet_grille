@@ -73,7 +73,7 @@ void gen_point(polygone*, point*, float, char, float);
 * Return:
 * Rien
 */
-void delete_point(polygone*, polygone*);
+void delete_point_polygone(polygone*, polygone*);
 
 /*
 * delete_point();
@@ -83,7 +83,7 @@ void delete_point(polygone*, polygone*);
 * Return:
 * Rien
 */
-void delete_point2(polygone* , point*);
+void delete_point_polygone2(polygone* , point*);
 
 /*
 * verif_Voisin();
@@ -94,3 +94,6 @@ void delete_point2(polygone* , point*);
 * Booleen indiquant si oui ou non ils sont voisins
 */
 bool verif_Voisin(polygone*, point*, point*);
+
+bool gen_point_polygone_TEMPORAIRE(polygone*, point*, float);
+void gen_point_TEMPORAIRE(polygone*, point*, bool, bool, bool, bool, bool, float);
