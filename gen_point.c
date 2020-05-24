@@ -18,16 +18,14 @@ polygone* creerPolyInterdit(pointp* unSommet){
 // Vérifier que le point se trouve dans le polygone
 bool pointIsInPoly(pointp* lePoint, polygone* lePolygone){
 	bool isInside = false;
-
-	int minX, minY, maxX, maxY;
+	float minX, minY, maxX, maxY;
 	minX = lePolygone->sommetPoly->x;
 	minY = lePolygone->sommetPoly->y;
 	maxX = minX;
 	maxY = minY;
-
 	//Recuperer le maximum et minimum des coordonnées x/y
 	pointp* sommetSuivant = lePolygone->sommetPoly->next;
-	while(sommetSuivant->x != lePolygone->sommetPoly->x || sommetSuivant->x != lePolygone->sommetPoly->y){
+	while(sommetSuivant->x != lePolygone->sommetPoly->x || sommetSuivant->y != lePolygone->sommetPoly->y){
 		if(sommetSuivant->x < minX){
 			minX = sommetSuivant->x;
 		}else if(sommetSuivant->x > maxX){
@@ -41,23 +39,74 @@ bool pointIsInPoly(pointp* lePoint, polygone* lePolygone){
 		}
 		sommetSuivant = sommetSuivant->next;
 	}
-
 	//Vérifier que le point se trouve bien dans le carré dont les sommets sont le minimum et le maximum de chaque axe
-	if(lePoint->x < minX || lePoint->x > maxX || lePoint->y < minY || lePoint->y > maxY){
+	if(lePoint->x < minX || lePoint->x > maxX){
 		return false;
 	}
+	if(lePoint->y < minY || lePoint->y > maxY){
+		return false;
+	}
+		
 
-	//Vérifier que le point se trouve dans le polygone en faisant le tour de celui-ci
+	//Vérif si il est bien à l'intérieur
 	pointp * sommet1 = lePolygone->sommetPoly;
 	pointp * sommet2 = sommet1->next;
-	int x = sommet1->x;
-	int y = sommet1->y;
-	for(int i = 0; i < 1 || sommet1->x != x || sommet1->y != y; i++){
-		if((sommet2->y > lePoint->y != (sommet1->y > lePoint->y) && lePoint->x < (((sommet1->x - sommet2->x)*(lePoint->y - sommet2->y))/(sommet1->y - sommet2->y) + sommet2->x))){
-			isInside = !isInside;
+	//Nécessaire pour boucle
+	float x = sommet2->x;
+	float y = sommet2->y;
+	int compteur;
+	pointp* depart = lePoint;
+	pointp* destination = init_point();
+	destination->x = minX - 5; destination->y = minY-5;
+
+	for(int w = 0; (w < 1 || sommet2->x != x || sommet2->y !=y); w++){
+		float a1 = (depart->y - destination->y)/ (depart->x - destination->x);
+		float b1 = (depart->y - (a1*depart->x));
+		float a2 =(sommet1->y - sommet2->y)/(sommet1->x - sommet2->x);
+		float b2 = (sommet1->y - (a2*sommet1->x));
+		if((a1 - a2) != 0){
+			float m = (b2 - b1)/(a1 - a2);
+			printf("Valeur m : %f\n", m);
+			if(depart->x < destination->x){
+				if(sommet1->x < sommet2->x){
+					if(depart->x < m && destination->x > m){
+						if(sommet1->x < m && sommet2->x > m){
+							compteur++;
+						}
+					}
+
+				}else{
+					if(depart->x < m && destination->x > m){
+						if(sommet1->x > m && sommet2->x < m){
+							compteur++;
+						}
+					}
+				}
+			}else {
+				if(sommet1->x < sommet2->x){
+					if(depart->x > m && destination->x < m){
+						if(sommet1->x < m && sommet2->x > m){
+							compteur++;
+						}
+					}
+
+				}else{
+					if(depart->x > m && destination->x < m){
+						if(sommet1->x > m && sommet2->x < m){
+							compteur++;
+						}
+					}
+				}
+			}
 		}
+		sommet1 = sommet1->next;
+		sommet2 = sommet2->next;
 	}
-	return isInside;
+	printf("Compteur: %d \n", compteur);
+	if(compteur%2==0){
+		return false;
+	}
+	return true;
 
 }
 
