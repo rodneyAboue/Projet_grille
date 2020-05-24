@@ -27,7 +27,7 @@ bool pointIsInPoly(point* lePoint, polygone* lePolygone){
 
 	//Recuperer le maximum et minimum des coordonnées x/y
 	point* sommetSuivant = lePolygone->sommetPoly->next;
-	while(sommetSuivant->x != lePolygone->sommetPoly->x && sommetSuivant->x != lePolygone->sommetPoly->y){
+	while(sommetSuivant->x != lePolygone->sommetPoly->x || sommetSuivant->x != lePolygone->sommetPoly->y){
 		if(sommetSuivant->x < minX){
 			minX = sommetSuivant->x;
 		}else if(sommetSuivant->x > maxX){
@@ -52,7 +52,7 @@ bool pointIsInPoly(point* lePoint, polygone* lePolygone){
 	point * sommet2 = sommet1->next;
 	int x = sommet1->x;
 	int y = sommet1->y;
-	for(int i = 0; i < 1 && sommet1->x != x && sommet1->y != y; i++){
+	for(int i = 0; i < 1 || sommet1->x != x || sommet1->y != y; i++){
 		if((sommet2->y > lePoint->y != (sommet1->y > lePoint->y) && lePoint->x < (((sommet1->x - sommet2->x)*(lePoint->y - sommet2->y))/(sommet1->y - sommet2->y) + sommet2->x))){
 			isInside = !isInside;
 		}
@@ -443,7 +443,7 @@ bool verif_Voisin(polygone* lePoly, point* depart, point* destination){
 	//Nécessaire pour boucle
 	int x = sommet2->x;
 	int y = sommet2->y;
-	for(int w = 0; (w < 1 && sommet2->x != x && sommet2->y !=y) || !verif ; w++){
+	for(int w = 0; (w < 1 || sommet2->x != x || sommet2->y !=y) || !verif ; w++){
 		int a1 = (depart->y - destination->y)/ (depart->x - destination->x);
 		int b1 = (depart->y - (a1*depart->x));
 
