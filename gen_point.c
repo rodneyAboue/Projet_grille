@@ -1,22 +1,22 @@
 #include "gen_point.h"
 
-polygone * creerPoly(point * unSommet){
+polygone * creerPoly(pointp * unSommet){
 	polygone * lePoly = (polygone*)malloc(1*sizeof(polygone));
 	lePoly->nbPoint = 0;
 	lePoly->sommetPoly = unSommet;
-	lePoly->listePointPoly=(point**)malloc(lePoly->nbPoint*sizeof(point*));
+	lePoly->listePointPoly=(pointp**)malloc(lePoly->nbPoint*sizeof(pointp*));
 	lePoly->type = 's';
 	return lePoly;
 }
 
-polygone* creerPolyInterdit(point* unSommet){
+polygone* creerPolyInterdit(pointp* unSommet){
 	polygone * lePoly = creerPoly(unSommet);
 	lePoly->type = 'i';
 	return lePoly;
 }
 
 // Vérifier que le point se trouve dans le polygone
-bool pointIsInPoly(point* lePoint, polygone* lePolygone){
+bool pointIsInPoly(pointp* lePoint, polygone* lePolygone){
 	bool isInside = false;
 
 	int minX, minY, maxX, maxY;
@@ -26,7 +26,7 @@ bool pointIsInPoly(point* lePoint, polygone* lePolygone){
 	maxY = minY;
 
 	//Recuperer le maximum et minimum des coordonnées x/y
-	point* sommetSuivant = lePolygone->sommetPoly->next;
+	pointp* sommetSuivant = lePolygone->sommetPoly->next;
 	while(sommetSuivant->x != lePolygone->sommetPoly->x || sommetSuivant->x != lePolygone->sommetPoly->y){
 		if(sommetSuivant->x < minX){
 			minX = sommetSuivant->x;
@@ -48,8 +48,8 @@ bool pointIsInPoly(point* lePoint, polygone* lePolygone){
 	}
 
 	//Vérifier que le point se trouve dans le polygone en faisant le tour de celui-ci
-	point * sommet1 = lePolygone->sommetPoly;
-	point * sommet2 = sommet1->next;
+	pointp * sommet1 = lePolygone->sommetPoly;
+	pointp * sommet2 = sommet1->next;
 	int x = sommet1->x;
 	int y = sommet1->y;
 	for(int i = 0; i < 1 || sommet1->x != x || sommet1->y != y; i++){
@@ -62,20 +62,20 @@ bool pointIsInPoly(point* lePoint, polygone* lePolygone){
 }
 
 // Vérifier le point de départ et lancer ensuite la création des points
-bool gen_point_polygone_TEMPORAIRE(polygone* lePolygone, point* pointDepart, float distanceVoisin){
+bool gen_point_polygone_TEMPORAIRE(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
 	if(pointIsInPoly(pointDepart, lePolygone) == false){
 		return false;
 	}
-	lePolygone->listePointPoly = (point **) realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+	lePolygone->listePointPoly = (pointp **) realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 	lePolygone->listePointPoly[0] = pointDepart;
 	gen_point_TEMPORAIRE(lePolygone, pointDepart,false,true,true,true,true, distanceVoisin);
 	return true;
 }
 
 // Générer l'ensemble des points à partir d'un point de départ
-void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_sur_arrete,bool explorer_nord, bool explorer_sud, bool explorer_ouest, bool explorer_est, float distanceVoisin){
-	point* nouveauPoint = init_point();
-	point* nouveauPoint2 = init_point();
+void gen_point_TEMPORAIRE(polygone* lePolygone, pointp* pointDepart, bool point_sur_arrete,bool explorer_nord, bool explorer_sud, bool explorer_ouest, bool explorer_est, float distanceVoisin){
+	pointp* nouveauPoint = init_point();
+	pointp* nouveauPoint2 = init_point();
 
 	bool nord;
 	bool sud;
@@ -131,7 +131,7 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 				}
 			}
 			if(!existant){
-				lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+				lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 				lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 				gen_point_TEMPORAIRE(lePolygone, nouveauPoint,cote_proche,nord&&cote_proche || !cote_proche,sud&&cote_proche || !cote_proche,!cote_proche,false, distanceVoisin);
 				nouveauPoint = init_point();
@@ -182,7 +182,7 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 				}
 			}
 			if(!existant){
-				lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+				lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 				lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 				gen_point_TEMPORAIRE(lePolygone, nouveauPoint,cote_proche,nord&&cote_proche || !cote_proche,sud&&cote_proche || !cote_proche,false,!cote_proche, distanceVoisin);
 				nouveauPoint = init_point();
@@ -228,7 +228,7 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 				}
 			}
 			if(!existant){
-				lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+				lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 				lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 				gen_point_TEMPORAIRE(lePolygone, nouveauPoint,cote_proche,!cote_proche,false,ouest&&cote_proche || !cote_proche,est&&cote_proche || !cote_proche, distanceVoisin);
 				nouveauPoint = init_point();
@@ -279,7 +279,7 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 				}
 			}
 			if(!existant){
-				lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+				lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 				lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 				gen_point_TEMPORAIRE(lePolygone, nouveauPoint,cote_proche,false,!cote_proche,ouest&&cote_proche || !cote_proche,est&&cote_proche || !cote_proche, distanceVoisin);
 				nouveauPoint = init_point();
@@ -295,19 +295,19 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, point* pointDepart, bool point_s
 
 
 // Vérifier le point de départ et lancer ensuite la création des points
-bool gen_point_polygone(polygone* lePolygone, point* pointDepart, float distanceVoisin, char cote, float diff){
+bool gen_point_polygone(polygone* lePolygone, pointp* pointDepart, float distanceVoisin, char cote, float diff){
 	if(pointIsInPoly(pointDepart, lePolygone) == false){
 		return false;
 	}
-	lePolygone->listePointPoly = (point **) realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+	lePolygone->listePointPoly = (pointp **) realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 	lePolygone->listePointPoly[lePolygone->nbPoint - 1] = pointDepart;
 	gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin, cote, diff);
 	return true;
 }
 
 // Générer l'ensemble des points à partir d'un point de départ
-void gen_point(polygone* lePolygone, point* pointDepart, float distanceVoisin, char cote, float diff){
-	point* nouveauPoint = init_point();
+void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin, char cote, float diff){
+	pointp* nouveauPoint = init_point();
 
 	//Point à l'OUEST
 	nouveauPoint->x = pointDepart->x - distanceVoisin;
@@ -320,7 +320,7 @@ void gen_point(polygone* lePolygone, point* pointDepart, float distanceVoisin, c
 			}
 		}
 		if(!existant){
-			lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 			if(cote == 'O'){
 				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin - diff, cote, diff);
@@ -344,7 +344,7 @@ void gen_point(polygone* lePolygone, point* pointDepart, float distanceVoisin, c
 			}
 		}
 		if(!existant){
-			lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 			if(cote == 'E'){
 				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin - diff, cote, diff);
@@ -369,7 +369,7 @@ void gen_point(polygone* lePolygone, point* pointDepart, float distanceVoisin, c
 			}
 		}
 		if(!existant){
-			lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 			if(cote == 'N'){
 				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin - diff, cote, diff);
@@ -393,7 +393,7 @@ void gen_point(polygone* lePolygone, point* pointDepart, float distanceVoisin, c
 			}
 		}
 		if(!existant){
-			lePolygone->listePointPoly = (point **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(point*));
+			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 			if(cote == 'S'){
 				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin - diff, cote, diff);
@@ -409,25 +409,25 @@ void gen_point(polygone* lePolygone, point* pointDepart, float distanceVoisin, c
 void delete_point_polygone(polygone* lePoly, polygone* lePolyInterdit){
 	for(int i = 0; i< lePoly->nbPoint; i++){
 		if(pointIsInPoly(lePoly->listePointPoly[i], lePolyInterdit) == true){
-			lePolyInterdit->listePointPoly = (point**)realloc(lePolyInterdit->listePointPoly, ++(lePolyInterdit->nbPoint)*sizeof(point*));
+			lePolyInterdit->listePointPoly = (pointp**)realloc(lePolyInterdit->listePointPoly, ++(lePolyInterdit->nbPoint)*sizeof(pointp*));
 			lePolyInterdit->listePointPoly[lePolyInterdit->nbPoint-1] = lePoly->listePointPoly[i];
 			for(int j = i; j < lePoly->nbPoint -1; j++){
 				lePoly->listePointPoly[j] = lePoly->listePointPoly[j+1];
 			}
-			lePoly->listePointPoly = (point**)realloc(lePoly->listePointPoly, --(lePoly->nbPoint)*sizeof(point*));
+			lePoly->listePointPoly = (pointp**)realloc(lePoly->listePointPoly, --(lePoly->nbPoint)*sizeof(pointp*));
 			i--;
 		}
 	}
 }
 
-void delete_point_polygone2(polygone* lePoly, point* sommetPolyInterdit){
+void delete_point_polygone2(polygone* lePoly, pointp* sommetPolyInterdit){
 	polygone* polyInterdit = creerPolyInterdit(sommetPolyInterdit);
 	for(int i = 0; i < lePoly->nbPoint; i++){
 		if(pointIsInPoly(lePoly->listePointPoly[i], polyInterdit) == true){
-			point* pointFree = lePoly->listePointPoly[i];
+			pointp* pointFree = lePoly->listePointPoly[i];
 			if(i != lePoly->nbPoint - 1)
 				lePoly->listePointPoly[i] = lePoly->listePointPoly[lePoly->nbPoint - 1];
-			lePoly->listePointPoly = (point**)realloc(lePoly->listePointPoly, --(lePoly->nbPoint)*sizeof(point*));
+			lePoly->listePointPoly = (pointp**)realloc(lePoly->listePointPoly, --(lePoly->nbPoint)*sizeof(pointp*));
 			i--;
 			free(pointFree);
 		}
@@ -435,10 +435,10 @@ void delete_point_polygone2(polygone* lePoly, point* sommetPolyInterdit){
 	free(polyInterdit);
 }
 
-bool verif_Voisin(polygone* lePoly, point* depart, point* destination){
+bool verif_Voisin(polygone* lePoly, pointp* depart, pointp* destination){
 	bool verif = true;
-	point * sommet1 = lePoly->sommetPoly;
-	point * sommet2 = sommet1->next;
+	pointp * sommet1 = lePoly->sommetPoly;
+	pointp * sommet2 = sommet1->next;
 
 	//Nécessaire pour boucle
 	int x = sommet2->x;

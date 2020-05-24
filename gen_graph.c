@@ -34,7 +34,7 @@ double min(double a, double b)
 
 // Given three colinear points p, q, r, the function checks if 
 // point q lies on line segment 'pr' 
-bool onSegment(point* p, point* q, point* r) 
+bool onSegment(pointp* p, pointp* q, pointp* r) 
 { 
     if (q->x <= max(p->x, r->x) && q->x >= min(p->x, r->x) && 
         q->y <= max(p->y, r->y) && q->y >= min(p->y, r->y)) 
@@ -48,7 +48,7 @@ bool onSegment(point* p, point* q, point* r)
 // 0 --> p, q and r are colinear 
 // 1 --> Clockwise 
 // 2 --> Counterclockwise 
-int orientation(point* p, point* q, point* r) 
+int orientation(pointp* p, pointp* q, pointp* r) 
 { 
     // See https://www.geeksforgeeks.org/orientation-3-ordered-points/ 
     // for details of below formula. 
@@ -62,7 +62,7 @@ int orientation(point* p, point* q, point* r)
   
 // The main function that returns true if line segment 'p1q1' 
 // and 'p2q2' intersect. 
-bool doIntersect(point* p1, point* q1, point* p2, point* q2) 
+bool doIntersect(pointp* p1, pointp* q1, pointp* p2, pointp* q2) 
 { 
     // Find the four orientations needed for general and 
     // special cases 
@@ -95,7 +95,7 @@ bool doIntersect(point* p1, point* q1, point* p2, point* q2)
 bool intersection(polygone *lePolygone, int i, int j){
 
 	liste_polygone* lesPolygones = polygones;
-	point* sommet; 
+	pointp* sommet; 
 
 	// pour chaque polygone 
 	while(lesPolygones->next != NULL){

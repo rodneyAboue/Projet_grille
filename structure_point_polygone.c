@@ -26,7 +26,7 @@ liste_polygone* init_liste_polygone(){
 
 
 
-void add_polygone_liste(liste_polygone* liste, point* p){
+void add_polygone_liste(liste_polygone* liste, pointp* p){
 	
 	if(liste == NULL || p == NULL){
 		perror("erreur parametre null");
@@ -79,9 +79,9 @@ void delete_liste_polygone(liste_polygone* lp){
 //initialise un point 
 //lui donne un id unique et alloue la liste des voisins
 //renvoie le pointeur passé en paramètre 
-point* init_point(){
-	point* p;
-	p = (point*) malloc(sizeof(point));
+pointp* init_point(){
+	pointp* p;
+	p = (pointp*) malloc(sizeof(pointp));
 	if(p==NULL){
 		perror("erreur malloc");
 		exit(1);
@@ -89,7 +89,7 @@ point* init_point(){
 	return p;
 }
 
-void delete_point(point* p){
+void delete_point(pointp* p){
 	
 	if(p==NULL){
 		perror("error parametre null");
@@ -101,7 +101,7 @@ void delete_point(point* p){
 
 //affiche un point sous le format : 
 //- id < x,y >\n
-void afficher_point(point *p){
+void afficher_point(pointp *p){
 
 	if(p==NULL){
 		perror("error parametre null");
@@ -112,7 +112,7 @@ void afficher_point(point *p){
 }
 
 //revoie le nombre d'éléments d'une liste 
-int count_point_liste(point* liste){
+int count_point_liste(pointp* liste){
 
 	if(liste==NULL){
 		perror("error parametre null");
@@ -122,7 +122,7 @@ int count_point_liste(point* liste){
 	return compte_point_liste_2(liste, 0);
 }
 
-int compte_point_liste_2(point* liste, int nb_pts){
+int compte_point_liste_2(pointp* liste, int nb_pts){
 
 	nb_pts = nb_pts+1;
 	
@@ -136,7 +136,7 @@ int compte_point_liste_2(point* liste, int nb_pts){
 
 // renvoie le pointeur du point
 // renvoie NULL si le point n'est pas trouve
-point* search_point_liste_id(point* liste, int id){
+pointp* search_point_liste_id(pointp* liste, int id){
 
 	if(liste==NULL){
 		perror("error parametre null");
@@ -152,7 +152,7 @@ point* search_point_liste_id(point* liste, int id){
 
 // renvoie le pointeur du point
 // renvoie NULL si le point n'est pas trouve
-point* search_point_liste_coords(point* liste, double x, double y){
+pointp* search_point_liste_coords(pointp* liste, double x, double y){
 
 	if(liste==NULL){
 		perror("error parametre null");
@@ -173,7 +173,7 @@ point* search_point_liste_coords(point* liste, double x, double y){
 //ajoute un point à une liste de points
 //revoie l'id du point ajouté 
 // ou -1 si le point est déjà présent dans la liste
-int add_point_liste(point* liste, double x, double y){
+int add_point_liste(pointp* liste, double x, double y){
 
 	if(liste==NULL){
 		perror("error parametre null");
@@ -205,7 +205,7 @@ int add_point_liste(point* liste, double x, double y){
 //retire un point à une liste de points
 //revoie 0 si le point est retiré 
 // ou -1 si le point n'est pas présent dans la liste
-int remove_point_liste(point* liste, double x, double y){
+int remove_point_liste(pointp* liste, double x, double y){
 
 	if(liste==NULL){
 		perror("error parametre null");
@@ -214,7 +214,7 @@ int remove_point_liste(point* liste, double x, double y){
 		
 	while(liste->next != NULL){
 		if(liste->next->x == x && liste->next->y == y) {
-			point* del = liste->next;
+			pointp* del = liste->next;
 			liste->next = del->next;
 			delete_point(del);
 			return 0;
@@ -226,7 +226,7 @@ int remove_point_liste(point* liste, double x, double y){
 };	
 
 //supprime une liste de points et libère sa composante liste
-void delete_liste_point_rec(point* liste){
+void delete_liste_point_rec(pointp* liste){
 
 	if(liste==NULL){
 		perror("error parametre null");
@@ -240,7 +240,7 @@ void delete_liste_point_rec(point* liste){
 	delete_point(liste);
 };
 
-void delete_liste_point(point* liste){
+void delete_liste_point(pointp* liste){
 
 	if(liste==NULL){
 		perror("error parametre null");
@@ -255,7 +255,7 @@ void delete_liste_point(point* liste){
 
 
 //affiche une liste de points
-void afficher_liste_point_rec(point* liste){
+void afficher_liste_point_rec(pointp* liste){
 
 	if(liste==NULL){
 		perror("error parametre null");
@@ -268,9 +268,9 @@ void afficher_liste_point_rec(point* liste){
 	}
 };
 
-void afficher_liste_point(point* liste){
+void afficher_liste_point(pointp* liste){
 
-	point* it = liste;
+	pointp* it = liste;
 
 	if(liste==NULL){
 		perror("error parametre null");

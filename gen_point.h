@@ -5,9 +5,9 @@
 
 typedef struct{
 	//Un sommet du polygone
-	point * sommetPoly;
+	pointp * sommetPoly;
 	//Liste de pointeur de point se trouvant à l'interieur du polygone
-	point ** listePointPoly;
+	pointp ** listePointPoly;
 	//Nombre de point dans le poly hors sommet (nécessaire pour parcourir la liste)
 	int nbPoint;
 	//Permet de savoir si c'est un polygone standart ou interdit;
@@ -23,7 +23,7 @@ typedef struct{
 * Return:
 * Une structure polygone
 */
-polygone* creerPoly(point *);
+polygone* creerPoly(pointp *);
 
 /*
 * creerPolyInterdit();
@@ -33,7 +33,7 @@ polygone* creerPoly(point *);
 * Return:
 * Une structure polygone
 */
-polygone* creerPolyInterdit(point *);
+polygone* creerPolyInterdit(pointp *);
 
 /*
 * pointIsInPoly();
@@ -43,7 +43,7 @@ polygone* creerPolyInterdit(point *);
 * Return:
 * Un booleen qui indique vrai si le point se trouve dans le polygone, faux sinon
 */
-bool pointIsInPoly(point*, polygone*);
+bool pointIsInPoly(pointp*, polygone*);
 
 /*
 * gen_point_polygone();
@@ -53,7 +53,7 @@ bool pointIsInPoly(point*, polygone*);
 * Return:
 * Un booleen qui indique si la création a été effectuée.
 */
-bool gen_point_polygone(polygone*, point*, float, char, float);
+bool gen_point_polygone(polygone*, pointp*, float, char, float);
 
 /*
 * gen_point();
@@ -63,7 +63,7 @@ bool gen_point_polygone(polygone*, point*, float, char, float);
 * Return: 
 * Rien, la liste de point du polygone est modifié, il n'est donc pas nécessaire de renvoyer celui-ci
 */
-void gen_point(polygone*, point*, float, char, float);
+void gen_point(polygone*, pointp*, float, char, float);
 
 /*
 *
@@ -83,7 +83,7 @@ void delete_point_polygone(polygone*, polygone*);
 * Return:
 * Rien
 */
-void delete_point_polygone2(polygone* , point*);
+void delete_point_polygone2(polygone* , pointp*);
 
 /*
 * verif_Voisin();
@@ -93,7 +93,7 @@ void delete_point_polygone2(polygone* , point*);
 * Return:
 * Booleen indiquant si oui ou non ils sont voisins
 */
-bool verif_Voisin(polygone*, point*, point*);
+bool verif_Voisin(polygone*, pointp*, pointp*);
 
-bool gen_point_polygone_TEMPORAIRE(polygone*, point*, float);
-void gen_point_TEMPORAIRE(polygone*, point*, bool, bool, bool, bool, bool, float);
+bool gen_point_polygone_TEMPORAIRE(polygone*, pointp*, float);
+void gen_point_TEMPORAIRE(polygone*, pointp*, bool, bool, bool, bool, bool, float);

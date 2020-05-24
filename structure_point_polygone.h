@@ -1,8 +1,11 @@
+#ifndef STRUCTURES_POINT_POLYGONE
+#define STRUCTURES_POINT_POLYGONE
+
 //-------------------- STRUCTURE DE DONNEES --------------------
 
 //---------- POINTS ----------
 
-typedef struct st_point point;
+typedef struct st_point pointp;
 typedef struct st_liste_polygone liste_polygone;
 
 typedef struct st_point{
@@ -11,11 +14,11 @@ typedef struct st_point{
 	double y;
 	char etat;
 
-	point* next;
-} point;
+	pointp* next;
+} pointp;
 
 typedef struct st_liste_polygone{
-	point* polygone;
+	pointp* polygone;
 	liste_polygone* next;
 }liste_polygone;
 
@@ -26,7 +29,7 @@ typedef struct st_liste_polygone{
 liste_polygone* init_liste_polygone();
 // initialise une liste de polygone et la retourne
 
-void add_polygone_liste(liste_polygone* liste, point* p);
+void add_polygone_liste(liste_polygone* liste, pointp* p);
 //ajoute un polygone à une liste de polygones
 
 void afficher_liste_polygone(liste_polygone* lp);
@@ -40,46 +43,46 @@ void delete_liste_polygone(liste_polygone *lp);
 //initialise un point 
 //lui donne un id 
 //renvoie un pointeur vers le point alloué
-point* init_point();
+pointp* init_point();
 
 //affiche un point sous le format : 
 //- id < x,y >\n
-void afficher_point(point *p);
+void afficher_point(pointp *p);
 
 
 //compte le nombre de points d'une liste de points et retourne ce nombre
 // Il faut appeler compte_point-liste et non l'autre
-int count_point_liste(point* liste);
-int compte_point_liste_2(point* liste, int nb_pts);
+int count_point_liste(pointp* liste);
+int compte_point_liste_2(pointp* liste, int nb_pts);
 
 // renvoie e pointeur du point
 // renvoie -1 si le point n'est pas trouve
-point* search_point_liste_id(point* liste, int id); // inutile ?? 
+pointp* search_point_liste_id(pointp* liste, int id); // inutile ?? 
 
 // renvoie l'index du point
 // renvoie -1 si le point n'est pas trouve
-point* search_point_liste_coords(point* liste, double x, double y);
+pointp* search_point_liste_coords(pointp* liste, double x, double y);
 
 //ajoute un point à une liste de points
 //revoie l'id du point ajouté 
 // ou -1 si le point est déjà présent dans la liste
-int add_point_liste(point* liste, double x, double y);
+int add_point_liste(pointp* liste, double x, double y);
 
 
 //retire un point à une liste de points
 //revoie l'id du point retiré 
 // ou -1 si le point n'est pas présent dans la liste
-int remove_point_liste(point* liste, double x, double y);
+int remove_point_liste(pointp* liste, double x, double y);
 	
 	
 
 //supprime une liste de points et libère sa composante liste
-void delete_liste_point(point* liste);
+void delete_liste_point(pointp* liste);
 
 //affiche une liste de points
-void afficher_liste_point(point* liste);
+void afficher_liste_point(pointp* liste);
 
-
+#endif
 
 
 /*
