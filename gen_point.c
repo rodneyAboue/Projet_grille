@@ -60,10 +60,14 @@ bool pointIsInPoly(pointp* lePoint, polygone* lePolygone){
 	destination->x = minX - 5; destination->y = minY-5;
 
 	for(int w = 0; (w < 1 || sommet2->x != x || sommet2->y !=y); w++){
-		float a1 = (depart->y - destination->y)/ (depart->x - destination->x);
-		float b1 = (depart->y - (a1*depart->x));
-		float a2 =(sommet1->y - sommet2->y)/(sommet1->x - sommet2->x);
-		float b2 = (sommet1->y - (a2*sommet1->x));
+		float a1 = 0; float a2 = 0;
+		float b1,b2;
+		if((depart->x - destination->x) != 0 && (sommet1->x - sommet2->x)!=0){
+			a1 = (depart->y - destination->y)/ (depart->x - destination->x);
+			b1 = (depart->y - (a1*depart->x));
+			a2 =(sommet1->y - sommet2->y)/(sommet1->x - sommet2->x);
+			b2 = (sommet1->y - (a2*sommet1->x));
+		}
 		if((a1 - a2) != 0){
 			float m = (b2 - b1)/(a1 - a2);
 			printf("Valeur m : %f\n", m);
