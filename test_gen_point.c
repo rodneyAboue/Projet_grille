@@ -138,6 +138,7 @@ int main(){
 	test_2->y = 2.1;
 
 	printf("---------------\n");
+
 	printf("Test de la boucle next\n");
 	sommetActuel = sommet1_2;
 	for(int j = 0; j<1 || sommetActuel-> x != sommet1_2->x || sommetActuel->y != sommet1_2->y; j++){
@@ -145,12 +146,13 @@ int main(){
 		sommetActuel = sommetActuel->next;
 	}
 	printf("Fin du test de la boucle next\n");
-
+	
 	if(pointIsInPoly(test_2, poly2)){
 		printf("Test avancé réussi\n");
 	}else{
 		printf("Test avancé raté\n");
 	}
+
 
 	gen_point_polygone_TEMPORAIRE(poly2, test_2, 2);
 
@@ -158,7 +160,6 @@ int main(){
 	for(int i = 0; i < poly2->nbPoint;i++){
 		printf("Point n°%d: x=%f y=%f\n", i+1, poly2->listePointPoly[i]->x, poly2->listePointPoly[i]->y);
 	}
-
 
 
 

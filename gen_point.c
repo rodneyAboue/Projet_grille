@@ -57,7 +57,7 @@ bool pointIsInPoly(pointp* lePoint, polygone* lePolygone){
 	int compteur = 0;
 	pointp* depart = lePoint;
 	pointp* destination = init_point();
-	destination->x = minX - 5; destination->y = minY-5;
+	destination->x = minX; destination->y = minY -1;
 
 	for(int w = 0; (w < 1 || sommet2->x != x || sommet2->y !=y); w++){
 		float a1 = 0; float a2 = 0;
