@@ -83,6 +83,85 @@ int main(){
 	}else{
 		printf("Test basique raté\n");
 	}
+
+	printf("---------------\n");
+	printf("Début des tests de gen_point_polygone_TEMPORAIRE\n");
+	pointp * sommet1_2 = init_point();
+	sommet1_2->x = 1;
+	sommet1_2->y = 1;
+
+	pointp * sommet2_2 = init_point();
+	sommet2_2->x = 5;
+	sommet2_2->y = 2;
+
+	pointp * sommet3_2 = init_point();
+	sommet3_2->x = 5;
+	sommet3_2->y = 6;
+
+	pointp * sommet4_2 = init_point();
+	sommet4_2->x = 8;
+	sommet4_2->y = 5;
+
+	pointp * sommet5_2 = init_point();
+	sommet5_2->x = 8;
+	sommet5_2->y = 7;
+
+	pointp * sommet6_2 = init_point();
+	sommet6_2->x = 4;
+	sommet6_2->y = 8;
+
+	pointp * sommet7_2 = init_point();
+	sommet7_2->x = 1;
+	sommet7_2->y = 3;
+
+
+	sommet1_2->next = sommet2_2;
+	sommet2_2->next = sommet3_2;
+	sommet3_2->next = sommet4_2;
+	sommet4_2->next = sommet5_2;
+	sommet5_2->next = sommet6_2;
+	sommet6_2->next = sommet7_2;
+	sommet7_2->next = sommet1_2;
+
+
+	printf("Test de la fonction creerPoly(pointp*)\n");
+	polygone* poly2 = creerPoly(sommet1_2);
+	if(poly2->sommetPoly->x == 1 && poly2->sommetPoly->y == 1 && poly2->type == 's' && poly2->nbPoint == 0){
+		printf("Test basique réussi \n");
+	}else{
+		printf("Test basique raté\n");
+	}
+	
+
+	pointp* test_2 = init_point();
+	test_2->x = 2;
+	test_2->y = 2.1;
+
+	printf("---------------\n");
+	printf("Test de la boucle next\n");
+	sommetActuel = sommet1_2;
+	for(int j = 0; j<1 || sommetActuel-> x != sommet1_2->x || sommetActuel->y != sommet1_2->y; j++){
+		printf("x=%f y=%f\n", sommetActuel->x, sommetActuel->y);
+		sommetActuel = sommetActuel->next;
+	}
+	printf("Fin du test de la boucle next\n");
+
+	if(pointIsInPoly(test_2, poly2)){
+		printf("Test avancé réussi\n");
+	}else{
+		printf("Test avancé raté\n");
+	}
+
+	gen_point_polygone_TEMPORAIRE(poly2, test_2, 2);
+
+
+	for(int i = 0; i < poly2->nbPoint;i++){
+		printf("Point n°%d: x=%f y=%f\n", i+1, poly2->listePointPoly[i]->x, poly2->listePointPoly[i]->y);
+	}
+
+
+
+
 	printf("---------------\n");
 	printf("Début des tests delete_point_polygone \n");
 	pointp* s5 = init_point();
@@ -104,6 +183,11 @@ int main(){
 	}else{
 		printf("Test raté\n");
 	}
+
+	
+
+
+
 
 	printf("Fin des tests\n");
 	return 0;
