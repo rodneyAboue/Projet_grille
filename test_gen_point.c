@@ -23,6 +23,7 @@ int main(){
 	sommet3->next = sommet4;
 	sommet4->next = sommet1;
 
+	printf("---------------\n");
 	printf("Test de la boucle next\n");
 	pointp* sommetActuel = sommet1;
 	for(int j = 0; j<1 || sommetActuel-> x != sommet1->x || sommetActuel->y != sommet1->y; j++){
@@ -39,6 +40,7 @@ int main(){
 		printf("Test basique raté\n");
 	}
 
+	printf("---------------\n");
 	printf("Test de la fonction pointIsInPoly(pointp*, polygone*) \n");
 	pointp* test = init_point();
 	test->x = 5;
@@ -58,6 +60,31 @@ int main(){
 		printf("Test basique raté \n");
 	}
 
+	sommet1->next = sommet2;
+	sommet2->next = sommet3;
+	sommet3->next = sommet4;
+	sommet4->next = sommet1;
+	printf("---------------\n");
+	printf("Début des tests de gen_point_polygone (et donc de gen_polygone)\n");
+	test->x = 0;
+	test->y = 0;
+	if(!gen_point_polygone(poly1, test, 1)){
+		printf("Test basique réussi\n");
+		test->x = 5;
+		test->y = 7;
+		if(gen_point_polygone(poly1, test, 1)){
+			printf("Test avancé réussi\n");
+			for(int i = 0; i < poly1->nbPoint;i++){
+				printf("Point n°%d: x=%f y=%f\n", i, poly1->listePointPoly[i]->x, poly1->listePointPoly[i]->y);
+			}
+		}else{
+			printf("Test avancé raté\n");
+		}
+	}else{
+		printf("Test basique raté\n");
+	}
+
+	printf("---------------\n");
 	printf("Fin des tests\n");
 	return 0;
 }

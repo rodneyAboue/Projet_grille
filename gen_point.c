@@ -46,7 +46,7 @@ bool pointIsInPoly(pointp* lePoint, polygone* lePolygone){
 	if(lePoint->y < minY || lePoint->y > maxY){
 		return false;
 	}
-		
+	//printf("Min/Max validé \n");
 
 	//Vérif si il est bien à l'intérieur
 	pointp * sommet1 = lePolygone->sommetPoly;
@@ -54,7 +54,7 @@ bool pointIsInPoly(pointp* lePoint, polygone* lePolygone){
 	//Nécessaire pour boucle
 	float x = sommet2->x;
 	float y = sommet2->y;
-	int compteur;
+	int compteur = 0;
 	pointp* depart = lePoint;
 	pointp* destination = init_point();
 	destination->x = minX - 5; destination->y = minY-5;
@@ -65,12 +65,12 @@ bool pointIsInPoly(pointp* lePoint, polygone* lePolygone){
 		if((depart->x - destination->x) != 0 && (sommet1->x - sommet2->x)!=0){
 			a1 = (depart->y - destination->y)/ (depart->x - destination->x);
 			b1 = (depart->y - (a1*depart->x));
-			a2 =(sommet1->y - sommet2->y)/(sommet1->x - sommet2->x);
+			a2 = (sommet1->y - sommet2->y)/(sommet1->x - sommet2->x);
 			b2 = (sommet1->y - (a2*sommet1->x));
 		}
 		if((a1 - a2) != 0){
 			float m = (b2 - b1)/(a1 - a2);
-			printf("Valeur m : %f\n", m);
+			//printf("Valeur m : %f\n", m);
 			if(depart->x < destination->x){
 				if(sommet1->x < sommet2->x){
 					if(depart->x < m && destination->x > m){
@@ -106,7 +106,7 @@ bool pointIsInPoly(pointp* lePoint, polygone* lePolygone){
 		sommet1 = sommet1->next;
 		sommet2 = sommet2->next;
 	}
-	printf("Compteur: %d \n", compteur);
+	//printf("Compteur: %d \n", compteur);
 	if(compteur%2==0){
 		return false;
 	}
@@ -348,18 +348,18 @@ void gen_point_TEMPORAIRE(polygone* lePolygone, pointp* pointDepart, bool point_
 
 
 // Vérifier le point de départ et lancer ensuite la création des points
-bool gen_point_polygone(polygone* lePolygone, pointp* pointDepart, float distanceVoisin, char cote, float diff){
-	if(pointIsInPoly(pointDepart, lePolygone) == false){
+bool gen_point_polygone(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
+	if(!pointIsInPoly(pointDepart, lePolygone)){
 		return false;
 	}
 	lePolygone->listePointPoly = (pointp **) realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 	lePolygone->listePointPoly[lePolygone->nbPoint - 1] = pointDepart;
-	gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin, cote, diff);
+	gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
 	return true;
 }
 
 // Générer l'ensemble des points à partir d'un point de départ
-void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin, char cote, float diff){
+void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
 	pointp* nouveauPoint = init_point();
 
 	//Point à l'OUEST
@@ -375,13 +375,7 @@ void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin, 
 		if(!existant){
 			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
-			if(cote == 'O'){
-				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin - diff, cote, diff);
-			}else if (cote == 'E'){
-				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin + diff, cote, diff);
-			}else{
-				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin, cote, diff);
-			}
+			gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
 			nouveauPoint = init_point();
 		}
 	}
@@ -399,13 +393,7 @@ void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin, 
 		if(!existant){
 			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
-			if(cote == 'E'){
-				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin - diff, cote, diff);
-			}else if (cote == 'O'){
-				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin + diff, cote, diff);
-			}else{
-				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin, cote, diff);
-			}
+			gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
 			nouveauPoint = init_point();
 		}
 	}
@@ -424,13 +412,7 @@ void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin, 
 		if(!existant){
 			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
-			if(cote == 'N'){
-				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin - diff, cote, diff);
-			}else if (cote == 'S'){
-				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin + diff, cote, diff);
-			}else{
-				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin, cote, diff);
-			}
+			gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
 			nouveauPoint = init_point();
 		}
 	}
@@ -448,13 +430,7 @@ void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin, 
 		if(!existant){
 			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
-			if(cote == 'S'){
-				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin - diff, cote, diff);
-			}else if (cote == 'N'){
-				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin + diff, cote, diff);
-			}else{
-				gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin, cote, diff);
-			}
+			gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
 		}
 	}
 }

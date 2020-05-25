@@ -37,7 +37,7 @@ polygone* creerPolyInterdit(pointp *);
 
 /*
 * pointIsInPoly();
-* Vérifie si un point via ces coordonnées se trouve dans le polygone
+* Vérifie si un point se trouve dans le polygone
 * Argument:
 * Le point à vérifier et le polygone
 * Return:
@@ -53,7 +53,7 @@ bool pointIsInPoly(pointp*, polygone*);
 * Return:
 * Un booleen qui indique si la création a été effectuée.
 */
-bool gen_point_polygone(polygone*, pointp*, float, char, float);
+bool gen_point_polygone(polygone*, pointp*, float);
 
 /*
 * gen_point();
@@ -63,7 +63,7 @@ bool gen_point_polygone(polygone*, pointp*, float, char, float);
 * Return: 
 * Rien, la liste de point du polygone est modifié, il n'est donc pas nécessaire de renvoyer celui-ci
 */
-void gen_point(polygone*, pointp*, float, char, float);
+void gen_point(polygone*, pointp*, float);
 
 /*
 *
