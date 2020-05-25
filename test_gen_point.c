@@ -75,7 +75,7 @@ int main(){
 		if(gen_point_polygone(poly1, test, 1)){
 			printf("Test avancé réussi\n");
 			for(int i = 0; i < poly1->nbPoint;i++){
-				printf("Point n°%d: x=%f y=%f\n", i, poly1->listePointPoly[i]->x, poly1->listePointPoly[i]->y);
+				printf("Point n°%d: x=%f y=%f\n", i+1, poly1->listePointPoly[i]->x, poly1->listePointPoly[i]->y);
 			}
 		}else{
 			printf("Test avancé raté\n");
@@ -83,8 +83,28 @@ int main(){
 	}else{
 		printf("Test basique raté\n");
 	}
-
 	printf("---------------\n");
+	printf("Début des tests delete_point_polygone \n");
+	pointp* s5 = init_point();
+	pointp* s6 = init_point();
+	pointp* s7 = init_point();
+
+	s5->x = 1; s6->x= 2; s7->x = 8;
+	s5->y = 1; s6->y=8; s7->y = 9;
+	s5->next = s6;
+	s6->next = s7;
+	s7->next = s5;
+	int nombrePrecedent = poly1->nbPoint;
+	delete_point_polygone2(poly1, s5);
+	if(poly1->nbPoint != nombrePrecedent){
+		printf("Test réussi \n");
+		for(int i = 0; i < poly1->nbPoint; i++){
+			printf("Point n°%d: x=%f y=%f \n", i+1, poly1->listePointPoly[i]->x, poly1->listePointPoly[i]->y);
+		}
+	}else{
+		printf("Test raté\n");
+	}
+
 	printf("Fin des tests\n");
 	return 0;
 }

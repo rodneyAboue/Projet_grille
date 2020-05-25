@@ -452,12 +452,10 @@ void delete_point_polygone(polygone* lePoly, polygone* lePolyInterdit){
 void delete_point_polygone2(polygone* lePoly, pointp* sommetPolyInterdit){
 	polygone* polyInterdit = creerPolyInterdit(sommetPolyInterdit);
 	for(int i = 0; i < lePoly->nbPoint; i++){
-		if(pointIsInPoly(lePoly->listePointPoly[i], polyInterdit) == true){
+		if(pointIsInPoly(lePoly->listePointPoly[i], polyInterdit)){
 			pointp* pointFree = lePoly->listePointPoly[i];
-			if(i != lePoly->nbPoint - 1)
-				lePoly->listePointPoly[i] = lePoly->listePointPoly[lePoly->nbPoint - 1];
+			lePoly->listePointPoly[i] = lePoly->listePointPoly[lePoly->nbPoint - 1];
 			lePoly->listePointPoly = (pointp**)realloc(lePoly->listePointPoly, --(lePoly->nbPoint)*sizeof(pointp*));
-			i--;
 			free(pointFree);
 		}
 	}
@@ -465,34 +463,57 @@ void delete_point_polygone2(polygone* lePoly, pointp* sommetPolyInterdit){
 }
 
 bool verif_Voisin(polygone* lePoly, pointp* depart, pointp* destination){
-	bool verif = true;
 	pointp * sommet1 = lePoly->sommetPoly;
 	pointp * sommet2 = sommet1->next;
-
 	//Nécessaire pour boucle
 	int x = sommet2->x;
 	int y = sommet2->y;
-	for(int w = 0; (w < 1 || sommet2->x != x || sommet2->y !=y) || !verif ; w++){
-		int a1 = (depart->y - destination->y)/ (depart->x - destination->x);
-		int b1 = (depart->y - (a1*depart->x));
-
-		int a2 = (sommet1->y - sommet2->y)/(sommet1->x - sommet2->x);
-		int b2 = (sommet1->y - (a2*sommet1->x));
-
+	for(int w = 0; (w < 1 || sommet2->x != x || sommet2->y !=y); w++){
+		float a1 = 0; float a2 = 0;
+		float b1,b2;
+		if((depart->x - destination->x) != 0 && (sommet1->x - sommet2->x)!=0){
+			a1 = (depart->y - destination->y)/ (depart->x - destination->x);
+			b1 = (depart->y - (a1*depart->x));
+			a2 = (sommet1->y - sommet2->y)/(sommet1->x - sommet2->x);
+			b2 = (sommet1->y - (a2*sommet1->x));
+		}
 		if((a1 - a2) != 0){
-			int m = (b2 - b1)/(a1 - a2);
+			float m = (b2 - b1)/(a1 - a2);
+			//printf("Valeur m : %f\n", m);
 			if(depart->x < destination->x){
-				if(depart->x < m && destination->x > m){
-					verif = !verif;
+				if(sommet1->x < sommet2->x){
+					if(depart->x < m && destination->x > m){
+						if(sommet1->x < m && sommet2->x > m){
+							return false;
+						}
+					}
+
+				}else{
+					if(depart->x < m && destination->x > m){
+						if(sommet1->x > m && sommet2->x < m){
+							return false;
+						}
+					}
 				}
-			}else{
-				if(depart->x > m && destination->x < m){
-					verif = !verif;
+			}else {
+				if(sommet1->x < sommet2->x){
+					if(depart->x > m && destination->x < m){
+						if(sommet1->x < m && sommet2->x > m){
+							return false;
+						}
+					}
+
+				}else{
+					if(depart->x > m && destination->x < m){
+						if(sommet1->x > m && sommet2->x < m){
+							return false; 
+						}
+					}
 				}
 			}
 		}
 		sommet1 = sommet1->next;
 		sommet2 = sommet2->next;
 	}
-	return verif;
+	return true;
 }
