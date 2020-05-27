@@ -54,6 +54,48 @@ bool pointIsInPoly(pointp* lePoint, polygone* lePolygone){
 	//Nécessaire pour boucle
 	float x = sommet2->x;
 	float y = sommet2->y;
+
+	for(int w=0; (w<1 || sommet2->x != x || sommet2->y!=y); w++){
+		if(sommet1-> x <= sommet2->x){
+			if(sommet1->y <= sommet2->y){
+				if( (sommet1->x <= lePoint->x && sommet2->x >= lePoint->x) && (sommet2->y >= lePoint->y && sommet1->y <= lePoint->y) ){
+					float a = (sommet2->y - sommet1->y)/(sommet2->x - sommet1->x);
+					float b = sommet1->y - (a*sommet1->x);
+					if(((lePoint->x * a) + b) == lePoint->y){
+						return true;
+					}
+				}
+			}else{
+				if( (sommet1->x < lePoint->x && sommet2->x > lePoint->x) && (sommet2->y < lePoint->y && sommet1->y > lePoint->y) ){
+					float a = (sommet2->y - sommet1->y)/(sommet2->x - sommet1->x);
+					float b = sommet1->y - (a*sommet1->x);
+					if(((lePoint->x * a) + b) == lePoint->y){
+						return true;
+					}
+				}
+			}
+		}else{
+			if(sommet1->y <= sommet2->y){
+				if( (sommet2->x <= lePoint->x && sommet1->x >= lePoint->x) && (sommet2->y >= lePoint->y && sommet1->y <= lePoint->y) ){
+					float a = (sommet1->y - sommet2->y)/(sommet1->x - sommet2->x);
+					float b = sommet1->y - (a*sommet1->x);
+					if(((lePoint->x * a) + b) == lePoint->y){
+						return true;
+					}
+				}
+			}else{
+				if( (sommet1->x < lePoint->x && sommet2->x > lePoint->x) && (sommet2->y < lePoint->y && sommet1->y > lePoint->y) ){
+					float a = (sommet1->y - sommet2->y)/(sommet1->x - sommet2->x);
+					float b = sommet1->y - (a*sommet1->x);
+					if(((lePoint->x * a) + b) == lePoint->y){
+						return true;
+					}
+				}
+			}
+		
+		}
+	}
+
 	int compteur = 0;
 	pointp* depart = lePoint;
 	pointp* destination = init_point();
