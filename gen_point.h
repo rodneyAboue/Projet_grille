@@ -15,6 +15,8 @@ typedef struct{
 	char type;
 }polygone;
 
+
+
 /*
 * creerPoly();
 * Créer la structure polygone à partir d'un sommet;
@@ -36,14 +38,19 @@ polygone* creerPoly(pointp *);
 polygone* creerPolyInterdit(pointp *);
 
 /*
-* pointIsInPoly();
+* isInside() + fonctions que utilise isInside();
 * Vérifie si un point se trouve dans le polygone
 * Argument:
 * Le point à vérifier et le polygone
 * Return:
 * Un booleen qui indique vrai si le point se trouve dans le polygone, faux sinon
 */
-bool pointIsInPoly(pointp*, polygone*);
+double min(double a, double b);
+double max(double a, double b);
+bool onSegment(pointp* p, pointp* q, pointp* r);
+int orientation(pointp* p, pointp* q, pointp* r) ;
+bool doIntersect(pointp* p1, pointp* q1, pointp* p2, pointp* q2) ;
+bool isInside(pointp * lePoint, polygone* lePolygone) ;
 
 /*
 * gen_point_polygone();

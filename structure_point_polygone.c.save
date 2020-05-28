@@ -27,32 +27,24 @@ liste_polygone* init_liste_polygone(){
 
 
 void add_polygone_liste(liste_polygone* liste, pointp* p){
-	
 	if(liste == NULL || p == NULL){
 		perror("erreur parametre null");
 		exit(2);
 	}
-	
-	
 	while(liste->next != NULL){
 		liste = liste->next;
 	}
-	
 	liste->next = init_liste_polygone();
-	
 	liste->next->polygone = p;
-	
 }
 
 void afficher_liste_polygone(liste_polygone* lp){
-	
 	if(lp == NULL){
 		perror("erreur parametre null");
 		exit(2);
 	}
 	printf("liste polygone = {\n");
-		
-	while(lp->next != NULL){		
+	while(lp->next != NULL){
 		afficher_liste_point(lp->next->polygone);
 		lp = lp->next;
 	}
@@ -60,18 +52,16 @@ void afficher_liste_polygone(liste_polygone* lp){
 }
 
 void delete_liste_polygone(liste_polygone* lp){
-
 	if(lp == NULL){
 		perror("erreur parametre null");
 		exit(2);
-	}	
-	
+	}
+
 	if(lp->next != NULL){
 		lp = lp->next;
 		delete_liste_polygone(lp);
 		delete_liste_point(lp->polygone);
 	}
-	
 }
 
 //-------------------- FONCTIONS ASSOCIEES --------------------
