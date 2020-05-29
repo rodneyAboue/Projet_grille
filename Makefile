@@ -1,4 +1,9 @@
-all :	test_io	test_entree	test
+all :	test_io	test_entree	test 	exe
+
+exe:	structure_point_polygone.c gen_point.c exe.c entree_kml.c gen_graph.c
+	gcc -c structure_point_polygone.c entree_kml.c gen_point.c gen_graph.c exe.c
+	gcc -o exe structure_point_polygone.o entree_kml.o gen_point.o gen_graph.o exe.o
+	rm *.o
 
 
 # gen_point	

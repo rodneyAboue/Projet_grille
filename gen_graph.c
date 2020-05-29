@@ -1,12 +1,5 @@
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <math.h>
-#include "gen_point.h"
 #include "gen_graph.h"
-
-
 
 //float distance;
 int ** coveredBy;
@@ -15,13 +8,8 @@ int ** coveredBy;
 #define distanceCouverture 3.250
 #define distanceVoisin 1.500
 
-
-
-  
-
-
 // permet de savoir si le segment formé des points lePolygone->listePointPoly[i] et lePolygone->listePointPoly[j] croise une des arrêtes 
-bool intersection(polygone *lePolygone, int i, int j){
+/*bool intersection(polygone *lePolygone, int i, int j){
 
 	liste_polygone* lesPolygones = polygones;
 	pointp* sommet; 
@@ -44,14 +32,14 @@ bool intersection(polygone *lePolygone, int i, int j){
 	return false;
 
 }
-
+*/
 
 
 /*
 * Génération du graphe
 * Listes de l'ensemble des points en paramètre
 */
-
+/*
 void genererGraphe(polygone *lePolygone){
 	coveredBy = (int **)malloc(lePolygone->nbPoint * sizeof(int*));
 	int nb_points_couvrant[lePolygone->nbPoint]; // tailles des différents tableaux contenus dans coveredBy
@@ -100,18 +88,18 @@ void genererGraphe(polygone *lePolygone){
 	}
 	printf("];\n");
 }
-
+*/
 void genererGraphe_SECOUR(polygone* lePolygone){
 	bool accesDirect;
 	float distance;
 
-	FILE * fichier = fopen("graph.dat", "w");
+	FILE * fichier = fopen("tspp.dat", "w");
 	fprintf(fichier ,"Edges: {\n");
 	for(int i = 0; i < lePolygone->nbPoint; i++){
 		for(int j = i + 1; j < lePolygone->nbPoint; j++){
 			distance = sqrtf(pow((lePolygone->listePointPoly[i]->x - lePolygone->listePointPoly[j]->x),2) + pow((lePolygone->listePointPoly[i]->y - lePolygone->listePointPoly[j]->y),2));
-			accesDirect = !intersection(lePolygone, i, j);
-			if(distance <= distanceVoisin && accesDirect){
+			//accesDirect = !intersection(lePolygone, i, j);
+			if(distance <= distanceVoisin /*&& accesDirect*/){
 				fprintf(fichier, "< %d %d >,\n", lePolygone->listePointPoly[i]->id, lePolygone->listePointPoly[j]->id);
 			}
 		}
@@ -122,8 +110,8 @@ void genererGraphe_SECOUR(polygone* lePolygone){
 	for(int i = 0; i < lePolygone->nbPoint; i++){
 		for(int j = i+1; j< lePolygone->nbPoint; j++){
 			distance = sqrtf(pow((lePolygone->listePointPoly[i]->x - lePolygone->listePointPoly[j]->x),2) + pow((lePolygone->listePointPoly[i]->y - lePolygone->listePointPoly[j]->y),2));
-			accesDirect = !intersection(lePolygone, i, j);
-			if(distance <= distanceCouverture && accesDirect){
+			//accesDirect = !intersection(lePolygone, i, j);
+			if(distance <= distanceCouverture /*&& accesDirect*/){
 				fprintf(fichier, "< %d %d >,\n", lePolygone->listePointPoly[i]->id, lePolygone->listePointPoly[j]->id);
 			}
 		}

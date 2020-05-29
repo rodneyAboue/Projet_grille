@@ -9,11 +9,8 @@
 //retourne 1 si il y en a une
 // 0 sinon
 int next_polygone(FILE* f){
-
 	int ok = 0;
-	
 	char c = '\0';
-	
 	while(ok==0 && c != EOF){
 		c = fgetc(f);
 		if(c=='<'){
@@ -56,27 +53,22 @@ int next_polygone(FILE* f){
 			}
 		}
 	}
-	return ok;	
+	return ok;
 }
-
 //prend en parametre un FILE* d'un export kml
 //retourne le polygone présen à la suite du curseur de parcours du ficher
 pointp* create_polygone(FILE* f){
 	pointp* py = init_point();
 	double x, y;
-	
 	int fin = 0;
 	while(!fin){
 		if(fscanf(f, "%lf,%lf", &x, &y)==0){
 			perror("erreur fscanf\n");
 			exit(2);
 		}
-		
 		add_point_liste(py, x, y);
-		
 		if(fgetc(f)!= ' ') fin =1;
 	}
-	
 	return py;
 }
 
@@ -99,9 +91,7 @@ pointp* extraire_polygones(const char* export, liste_polygone* liste){
 	while(1){
 		if (next_polygone(f) == 0)
 			break;
-
 		py = create_polygone(f);
-		
 		//point de depart à mettre au point
 		if(py->next->next == NULL){
 			if(depart != NULL){
@@ -110,24 +100,19 @@ pointp* extraire_polygones(const char* export, liste_polygone* liste){
 			}
 			depart = py;
 		} else {
-			add_polygone_liste(liste, py);	
-		}
+			add_polygone_liste(liste, py);		}
 	}
 	return depart;
 }
 
 /*
 int main(int argc,  char* argv[]){
-	
 	liste_polygone* liste = init_liste_polygone();
 	pointp* depart;
-	
 	depart = extraire_polygones(argv[1], liste);
-	
 	printf("\n");
 	printf("//----- RESULTAT----\n");
 	printf("\n");
-	
 	if(depart!=NULL){
 		printf("- point de depart -\n");
 		printf("\n");
@@ -135,12 +120,10 @@ int main(int argc,  char* argv[]){
 		delete_liste_point(depart);
 		printf("\n");
 	}
-	
 	printf("- polygones -\n");
 	printf("\n");
 	afficher_liste_polygone(liste);
 	delete_liste_polygone(liste);
-
 	return 0;
 }
 */
