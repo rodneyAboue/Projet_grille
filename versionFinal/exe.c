@@ -1,7 +1,7 @@
 #include "entree_kml.h"
 #include "gen_graph.h"
 
-#define distanceVoisinCreation 0.001
+#define distanceVoisinCreation 0.005
 
 int main(int argc, char* argv[]){
 	// Vérification des arguments
