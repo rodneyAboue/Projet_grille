@@ -1,0 +1,10 @@
+# CPLEX
+cplexdir=/opt/ibm/ILOG/CPLEX_Studio126/
+if [ xxx"$LD_LIBRARY_PATH" = xxx ]; then
+	export LD_LIBRARY_PATH="$cplexdir"/opl/lib/x86-64_linux/static_pic/:"$cplexdir"/opl/lib/x86-64_linux/shared_pic:"$cplexdir"/opl/bin/x86-64_linux/:"$cplexdir"/cplex/lib/x86-64_linux/static_pic/
+else
+	export LD_LIBRARY_PATH="$LD_LIBRARY_PATH":"$cplexdir"/opl/lib/x86-64_linux/static_pic/:"$cplexdir"/opl/lib/x86-64_linux/shared_pic:"$cplexdir"/opl/bin/x86-64_linux/:"$cplexdir"/cplex/lib/x86-64_linux/static_pic/
+fi
+alias cplex="$cplexdir"/cplex/bin/x86-64_linux/cplex
+alias oplrun="$cplexdir"/opl/bin/x86-64_linux/oplrun
+alias oplide="$cplexdir"/opl/oplide/oplide

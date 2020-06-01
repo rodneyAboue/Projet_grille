@@ -359,6 +359,8 @@ bool gen_point_polygone(polygone* lePolygone, pointp* pointDepart, float distanc
 
 // Générer l'ensemble des points à partir d'un point de départ
 void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
+	
+
 	pointp* nouveauPoint = init_point();
 
 	//Point à l'OUEST

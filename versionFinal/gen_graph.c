@@ -90,13 +90,15 @@ void genererGraphe(liste_polygone* lesPolygones, polygone* lePolygone){
 	float distance;
 
 	FILE * fichier = fopen("tspp.dat", "w");
-	fprintf(fichier ,"n=%d;\n",lePolygone->nbPoint);
+
+	fprintf(fichier ,"n=%d;\n",lePolygone->nbPoint); //+++++++++++++++++++
+	
 	fprintf(fichier ,"Edges= {\n");
 	for(int i = 0; i < lePolygone->nbPoint; i++){
 		for(int j = i + 1; j < lePolygone->nbPoint; j++){
 			distance = sqrtf(pow((lePolygone->listePointPoly[i]->x - lePolygone->listePointPoly[j]->x),2) + pow((lePolygone->listePointPoly[i]->y - lePolygone->listePointPoly[j]->y),2));
 			accesDirect = !intersection(lePolygone, i, j, lesPolygones);
-			if(distance <= distanceVoisin /*&& accesDirect*/){
+			if(distance <= distanceVoisin && accesDirect){
 				fprintf(fichier, "< %d %d >,\n", lePolygone->listePointPoly[i]->id, lePolygone->listePointPoly[j]->id);
 			}
 		}
@@ -106,18 +108,21 @@ void genererGraphe(liste_polygone* lesPolygones, polygone* lePolygone){
 
 	fprintf(fichier, "CoveredBy = [\n");
 	for(int i = 0; i < lePolygone->nbPoint; i++){
-		fprintf(fichier, "{ ");
-		for(int j = 0; j< lePolygone->nbPoint; j++){
+		fprintf(fichier, "{ "); // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		for(int j = 0; j< lePolygone->nbPoint; j++){ //++++++++++++
 			distance = sqrtf(pow((lePolygone->listePointPoly[i]->x - lePolygone->listePointPoly[j]->x),2) + pow((lePolygone->listePointPoly[i]->y - lePolygone->listePointPoly[j]->y),2));
 			accesDirect = !intersection(lePolygone, i, j, lesPolygones);
-			if(distance <= distanceCouverture && accesDirect){
-				fprintf(fichier, "%d, ", lePolygone->listePointPoly[j]->id);
+			if(distance <= distanceCouverture && accesDirect){ //++++++++++++++
+				fprintf(fichier, "%d, ", lePolygone->listePointPoly[j]->id); //++++++++++++++++++++++++++++++++
 			}
 		}
-		fseek(fichier, -2, SEEK_END);
-		fprintf(fichier, " },\n");
+		fseek(fichier, -2, SEEK_END); // écrase la dernière virgule
+		fprintf(fichier, " },\n"); // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	}
 	fseek(fichier, -2, SEEK_END); // écrase la dernière virgule
 	fprintf(fichier, "\n];\n");
+
+
+
 	fclose(fichier);
 }
