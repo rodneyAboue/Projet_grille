@@ -100,7 +100,8 @@ void genererGraphe(liste_polygone* lesPolygones, polygone* lePolygone){
 			}
 		}
 	}
-	fprintf(fichier, "};\n");
+	fseek(fichier, -2, SEEK_END); // écrase la dernière virgule
+	fprintf(fichier, "\n};\n");
 
 	fprintf(fichier, "CoveredBy = [\n");
 	for(int i = 0; i < lePolygone->nbPoint; i++){
@@ -112,8 +113,7 @@ void genererGraphe(liste_polygone* lesPolygones, polygone* lePolygone){
 			}
 		}
 	}
-	fprintf(fichier, "];\n");
-
-
+	fseek(fichier, -2, SEEK_END); // écrase la dernière virgule
+	fprintf(fichier, "\n];\n");
 	fclose(fichier);
 }
