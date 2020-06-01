@@ -90,7 +90,7 @@ void genererGraphe(liste_polygone* lesPolygones, polygone* lePolygone){
 	float distance;
 
 	FILE * fichier = fopen("tspp.dat", "w");
-	fprintf(fichier ,"Edges: {\n");
+	fprintf(fichier ,"Edges= {\n");
 	for(int i = 0; i < lePolygone->nbPoint; i++){
 		for(int j = i + 1; j < lePolygone->nbPoint; j++){
 			distance = sqrtf(pow((lePolygone->listePointPoly[i]->x - lePolygone->listePointPoly[j]->x),2) + pow((lePolygone->listePointPoly[i]->y - lePolygone->listePointPoly[j]->y),2));
