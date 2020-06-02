@@ -1,5 +1,6 @@
 #include "entree_kml.h"
 #include "gen_graph.h"
+#include <errno.h>
 
 #define distanceVoisinCreation 0.005
 
