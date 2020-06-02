@@ -60,6 +60,7 @@ int main(int argc, char* argv[]){
 		}
 	}
 	printf("Graphe générer dans tspp.dat \n");
+	system("source configCPLEX.bsh");
 	system("oplrun tspp.mod tspp.dat params.dat"); 
 	
 	FILE* fichier = fopen("solutions.res","r");

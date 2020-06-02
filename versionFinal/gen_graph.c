@@ -27,6 +27,7 @@ bool intersection(polygone *lePolygone, int i, int j, liste_polygone* polygones)
 
 	}
 
+
 	return false;
 
 }
