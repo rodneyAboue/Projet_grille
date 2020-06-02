@@ -4,7 +4,8 @@
 
 #include "structure_point_polygone.h"
 
-int id_point = 0; 
+int id_point_liste_points = 1;
+int id_point_sommets = 0; 
 
 #define MY_PREC 0.0005
 
@@ -19,7 +20,7 @@ liste_polygone* init_liste_polygone(){
 		exit(1);
 	}
 	
-	p->polygone = init_point();
+	p->polygone = init_sommet();
 	
 	return p;
 }
@@ -79,7 +80,7 @@ void delete_liste_polygone(liste_polygone* lp){
 //initialise un point 
 //lui donne un id unique et alloue la liste des voisins
 //renvoie le pointeur passé en paramètre 
-pointp* init_point(){
+pointp* init_point_liste_points(){
 	pointp* p;
 	p = (pointp*) malloc(sizeof(pointp));
 	if(p==NULL){
@@ -87,7 +88,20 @@ pointp* init_point(){
 		exit(1);
 	}
 	
-	p->id = id_point++;
+	p->id = id_point_liste_points++;
+
+	return p;
+}
+
+pointp* init_sommet(){
+	pointp* p;
+	p = (pointp*) malloc(sizeof(pointp));
+	if(p==NULL){
+		perror("erreur malloc");
+		exit(1);
+	}
+	
+	p->id = id_point_sommets--;
 
 	return p;
 }
@@ -196,10 +210,10 @@ int add_point_liste(pointp* liste, double x, double y){
 		liste = liste->next;
 	}
 	
-	liste->next = init_point();
+	liste->next = init_sommet();
 	liste->next->x = x;
 	liste->next->y = y;
-	liste->next->id = ++id_point;
+	liste->next->id = ++id_point_sommets;
 	
 	return liste->next->id;
 	//return p->id;

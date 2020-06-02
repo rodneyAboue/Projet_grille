@@ -58,7 +58,7 @@ int next_polygone(FILE* f){
 //prend en parametre un FILE* d'un export kml
 //retourne le polygone présen à la suite du curseur de parcours du ficher
 pointp* create_polygone(FILE* f){
-	pointp* py = init_point();
+	pointp* py = init_sommet();
 	double x, y;
 	int fin = 0;
 	while(!fin){

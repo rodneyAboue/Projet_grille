@@ -29,6 +29,7 @@ typedef struct st_liste_polygone{
 liste_polygone* init_liste_polygone();
 // initialise une liste de polygone et la retourne
 
+
 void add_polygone_liste(liste_polygone* liste, pointp* p);
 //ajoute un polygone à une liste de polygones
 
@@ -40,10 +41,15 @@ void delete_liste_polygone(liste_polygone *lp);
 
 //-----------------------POINT-------------------------------------
 
-//initialise un point 
+//initialise un sommet 
 //lui donne un id 
 //renvoie un pointeur vers le point alloué
-pointp* init_point();
+pointp* init_sommet();
+
+//initialise un point de la grille 
+//lui donne un id 
+//renvoie un pointeur vers le point alloué
+pointp* init_point_liste_points();
 
 //affiche un point sous le format : 
 //- id < x,y >\n

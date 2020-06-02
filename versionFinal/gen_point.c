@@ -83,7 +83,7 @@ bool isInside(pointp * lePoint, polygone* lePolygone)
 { 
       
     // Create a point for line segment from p to infinite 
-    pointp* extreme = init_point();
+    pointp* extreme = init_sommet();
     
     extreme->x = INF;
     extreme->y = lePoint->y;
@@ -352,7 +352,13 @@ bool gen_point_polygone(polygone* lePolygone, pointp* pointDepart, float distanc
 		return false;
 	}
 	lePolygone->listePointPoly = (pointp **) realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
-	lePolygone->listePointPoly[lePolygone->nbPoint - 1] = pointDepart;
+
+	pointp* nouveauPoint = init_point_liste_points(); // pour avoir un id de point correct (compris entre 0 et le nb de pts de la grille-1)
+	nouveauPoint->x = pointDepart->x;
+	nouveauPoint->y = pointDepart->y;
+	
+
+	lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 	gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
 	return true;
 }
@@ -361,7 +367,7 @@ bool gen_point_polygone(polygone* lePolygone, pointp* pointDepart, float distanc
 void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
 	
 
-	pointp* nouveauPoint = init_point();
+	pointp* nouveauPoint = init_point_liste_points();
 
 	//Point à l'OUEST
 	nouveauPoint->x = pointDepart->x - distanceVoisin;
@@ -374,11 +380,12 @@ void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
 			}
 		}
 		if(!existant){
-			//printf("x: %f   y: %f\n", nouveauPoint->x,nouveauPoint->y);
 			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
+			
+
 			gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
-			nouveauPoint = init_point();
+			nouveauPoint = init_point_liste_points();
 		}
 	}
 
@@ -393,11 +400,10 @@ void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
 			}
 		}
 		if(!existant){
-			//printf("x: %f   y: %f\n", nouveauPoint->x,nouveauPoint->y);
 			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 			gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
-			nouveauPoint = init_point();
+			nouveauPoint = init_point_liste_points();
 		}
 	}
 
@@ -413,11 +419,10 @@ void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
 			}
 		}
 		if(!existant){
-			//printf("x: %f   y: %f\n", nouveauPoint->x,nouveauPoint->y);
 			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 			gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
-			nouveauPoint = init_point();
+			nouveauPoint = init_point_liste_points();
 		}
 	}
 
@@ -432,10 +437,10 @@ void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
 			}
 		}
 		if(!existant){
-			//printf("x: %f   y: %f\n", nouveauPoint->x,nouveauPoint->y);
 			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
 			gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
+			nouveauPoint = init_point_liste_points();
 		}
 	}
 }

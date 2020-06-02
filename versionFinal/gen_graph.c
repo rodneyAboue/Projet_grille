@@ -91,6 +91,7 @@ void genererGraphe(liste_polygone* lesPolygones, polygone* lePolygone){
 
 	FILE * fichier = fopen("tspp.dat", "w");
 
+	fprintf(fichier ,"alpha=0.5;\n");
 	fprintf(fichier ,"n=%d;\n",lePolygone->nbPoint); //+++++++++++++++++++
 	
 	fprintf(fichier ,"Edges= {\n");
