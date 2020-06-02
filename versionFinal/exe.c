@@ -59,5 +59,6 @@ int main(int argc, char* argv[]){
 		}
 	}
 	printf("Graphe générer dans tspp.dat \n");
+	system("oplrun tspp.mod tspp.dat params.dat"); 
 	return 0;
 }
