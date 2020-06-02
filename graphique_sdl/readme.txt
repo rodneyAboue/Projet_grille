@@ -14,3 +14,8 @@ Date : 21/05/2020
 	Affichage d'une image de fond + chargement de l'image shom (double clic)
 	Debut de l'analyse des algorithmes afin de les adapter et de les integrer au graphique
 
+version 1.4
+Date : 26/05/2020 ~ 01/06/2020
+	création du menu complete 
+	suite de l'analyse des algorithmes afin de les adapter et de les integrer au graphique
+
