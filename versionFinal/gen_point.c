@@ -195,6 +195,8 @@ void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
 			gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
 			nouveauPoint = init_point_liste_points();
 		}
+	}else{
+		free(nouveauPoint);
 	}
 }
 
