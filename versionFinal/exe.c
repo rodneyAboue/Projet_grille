@@ -59,9 +59,8 @@ int main(int argc, char* argv[]){
 			printf("Génération impossible, point de départ en dehors du polygone \n");
 		}
 	}
-	printf("Graphe générer dans tspp.dat \n");
-	system("source configCPLEX.bsh");
-	system("oplrun tspp.mod tspp.dat params.dat"); 
+	printf("Graphe généré dans tspp.dat \n");
+	system("/opt/ibm/ILOG/CPLEX_Studio126/opl/bin/x86-64_linux/oplrun tspp.mod tspp.dat params.dat"); 
 	
 	FILE* fichier = fopen("solutions.res","r");
 
