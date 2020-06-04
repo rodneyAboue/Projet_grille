@@ -1,20 +1,20 @@
 #include "gen_graph.h"
 
-// Variable correspondant aux distances entre 2 points pour considerer qu'un point est voisin à un autre ou couvert
+// Variables correspondants respectivement à la portée du radar et à la distance maximale entre 2 points voisins
 #define distanceCouverture 0.005
 #define distanceVoisin 0.01
 
 /*
-* Vérifie si le segment entre les points lePolygone->listePointPoly[i] et lePolygone->listePointPoly[j] croise une arete de l'un des polygones
+* Vérifie si le segment entre les points lePolygone->listePointPoly[i] et lePolygone->listePointPoly[j] croise une arrête de l'un des polygones
 */
 bool intersection(polygone *lePolygone, int i, int j, liste_polygone* polygones){
 	liste_polygone* lesPolygones = polygones;
 	pointp* sommet;
-	// Parcours de l'ensemble des polygones contenu dans la liste (Premier polygone vide)
+	// Parcours de l'ensemble des polygones contenus dans la liste (Premier polygone vide)
 	while(lesPolygones->next != NULL){
 		lesPolygones = lesPolygones->next;
 		sommet = lesPolygones->polygone;
-		// pour chaque arrête [sommet sommet->next] du polygone
+		// pour chaque arrête [sommet - sommet->next] du polygone
 		while(sommet != lesPolygones->polygone){
 			if(doIntersect(lePolygone->listePointPoly[i], lePolygone->listePointPoly[j], sommet, sommet->next)){
 				return true;
@@ -27,7 +27,7 @@ bool intersection(polygone *lePolygone, int i, int j, liste_polygone* polygones)
 
 /*
 * Génération du graphe
-* Insère l'ensemble des couples voisins/vus dans un fichier .dat
+* Ecrit dans un fichier .dat l'ensemble des arrêtes du graphe et, pour chaque sommet, l'ensemble des points depuis lesquels ce sommet est visible 
 */
 void genererGraphe(liste_polygone* lesPolygones, polygone* lePolygone){
 	bool accesDirect;
@@ -35,6 +35,7 @@ void genererGraphe(liste_polygone* lesPolygones, polygone* lePolygone){
 
 	// Création du fichier tspp.dat en supprimant une ancienne version si le fichier existe déjà
 	FILE * fichier = fopen("tspp.dat", "w");
+	
 	fprintf(fichier ,"alpha=0.05;\n");
 	fprintf(fichier ,"n=%d;\n",lePolygone->nbPoint);
 
@@ -49,7 +50,8 @@ void genererGraphe(liste_polygone* lesPolygones, polygone* lePolygone){
 			}
 		}
 	}
-	fseek(fichier, -2, SEEK_END); // Retire la dernière virgule
+	// Retire la dernière virgule
+	fseek(fichier, -2, SEEK_END); 
 	fprintf(fichier, "\n};\n");
 
 	// Mise en place des points couverts
@@ -63,9 +65,11 @@ void genererGraphe(liste_polygone* lesPolygones, polygone* lePolygone){
 				fprintf(fichier, "%d, ", lePolygone->listePointPoly[j]->id);
 			}
 		}
+		// Retire la dernière virgule
 		fseek(fichier, -2, SEEK_END);
 		fprintf(fichier, " },\n");
 	}
+	// Retire la dernière virgule
 	fseek(fichier, -2, SEEK_END);
 	fprintf(fichier, "\n];\n");
 	fclose(fichier);
