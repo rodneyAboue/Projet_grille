@@ -73,9 +73,9 @@ bool doIntersect(pointp* p1, pointp* q1, pointp* p2, pointp* q2){
 	return false; // Doesn't fall in any of the above cases
 }
 
-// Returns true if the point p lies inside the polygon[] with n vertices
+// Returns true if lePoint lies inside lePolygone with n vertices
 bool isInside(pointp * lePoint, polygone* lePolygone){
-    	// Create a point for line segment from p to infinite
+    	// Create a point for line segment from lePoint to infinite
     	pointp* extreme = init_sommet();
     	extreme->x = INF;
     	extreme->y = lePoint->y;
@@ -83,10 +83,10 @@ bool isInside(pointp * lePoint, polygone* lePolygone){
     	// Count intersections of the above line with sides of polygon
 	int count = 0;
 	do{
-  		// Check if the line segment from 'p' to 'extreme' intersects
-        	// with the line segment from 'polygon[i]' to 'polygon[next]'
+  		// Check if the line segment from 'lePoint' to 'extreme' intersects
+        	// with the line segment from 'sommet' to 'sommet->next'
         	if (doIntersect(sommet, sommet->next, lePoint, extreme)){
-            		// If the point 'p' is colinear with line segment 'i-next',
+            		// If 'lePoint' is colinear with line segment 'sommet-sommet->next',
             		// then check if it lies on segment. If it lies, return true,
             		// otherwise false
             		if (orientation(sommet, lePoint, sommet->next) == 0){
@@ -101,7 +101,7 @@ bool isInside(pointp * lePoint, polygone* lePolygone){
 }
 
 
-// Vérifier le point de départ et lancer ensuite la création des points
+// Vérifie le point de départ et lance ensuite la création des points
 bool gen_point_polygone(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
 	if(!isInside(pointDepart, lePolygone)){
 		return false;
@@ -136,7 +136,7 @@ void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
 			// On aggrandie l'allocation en mémoire du tableau de point
 			lePolygone->listePointPoly = (pointp **)realloc(lePolygone->listePointPoly, ++(lePolygone->nbPoint)*sizeof(pointp*));
 			lePolygone->listePointPoly[lePolygone->nbPoint - 1] = nouveauPoint;
-			// On appel de nouveau la fonction avec le point fraichement ajouté à la liste
+			// On appel de nouveau la fonction avec le point fraîchement ajouté à la liste
 			gen_point(lePolygone, lePolygone->listePointPoly[lePolygone->nbPoint-1], distanceVoisin);
 			nouveauPoint = init_point_liste_points();
 		}
@@ -200,7 +200,7 @@ void gen_point(polygone* lePolygone, pointp* pointDepart, float distanceVoisin){
 	}
 }
 
-// Retire l'ensemble des points du polygone qui se trouve dans le polygone interdit
+// Retire l'ensemble des points du polygone qui se trouvent dans le polygone interdit
 void delete_point_polygone(polygone* lePoly, polygone* lePolyInterdit){
 	for(int i = 0; i< lePoly->nbPoint; i++){
 		if(isInside(lePoly->listePointPoly[i], lePolyInterdit) == true){
