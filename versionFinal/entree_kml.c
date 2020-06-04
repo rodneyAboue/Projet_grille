@@ -83,6 +83,7 @@ pointp* extraire_polygones(const char* export, liste_polygone* liste){
 		perror("erreur fopen");
 		exit(1);
 	}
+	
 
 	int fin = 0;
 	pointp* py, *depart = NULL;
@@ -91,7 +92,9 @@ pointp* extraire_polygones(const char* export, liste_polygone* liste){
 	while(1){
 		if (next_polygone(f) == 0)
 			break;
+		
 		py = create_polygone(f);
+
 		//point de depart à mettre au point
 		if(py->next->next == NULL){
 			if(depart != NULL){

@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-
 typedef struct{
 	//Un sommet du polygone
 	pointp * sommetPoly;
@@ -55,7 +54,7 @@ bool gen_point_polygone(polygone*, pointp*, float);
 * gen_point();
 * Génère les points de facon récursive;
 * Argument:
-* Le polygone, le point de départ et la distance entre les points
+* Le polygone, le point de départ et la distance entre les voisins
 * Return: 
 * Rien, la liste de point du polygone est modifié, il n'est donc pas nécessaire de renvoyer celui-ci
 */
@@ -63,8 +62,7 @@ void gen_point(polygone*, pointp*, float);
 
 /*
 *
-* Vérifie et retire l'ensemble des points d'un polygone aillant des coordonnées se trouvant dans un
-* polygone interdit
+* Retire les points d'un polygone dit interdit à un autre polygone et les stocks
 * Argument:
 * Le polygone interdit et le polygone contenant les points
 * Return:
@@ -72,3 +70,25 @@ void gen_point(polygone*, pointp*, float);
 */
 void delete_point_polygone(polygone*, polygone*);
 
+/*
+* delete_point();
+* Retire les points d'un polygone dit interdit à un autre polygone mais ne les stocks pas
+* Argument:
+* Le polygone contenant les points et un sommet du polygone Interdit
+* Return:
+* Rien
+*/
+void delete_point_polygone2(polygone* , pointp*);
+
+/*
+* verif_Voisin();
+* Vérifie que 2 voisins ne sont pas séparé par une arete du polygone
+* Argument:
+* Le polygone, et les 2 points supposés voisins
+* Return:
+* Booleen indiquant si oui ou non ils sont voisins
+*/
+bool verif_Voisin(polygone*, pointp*, pointp*);
+
+bool gen_point_polygone_TEMPORAIRE(polygone*, pointp*, float);
+void gen_point_TEMPORAIRE(polygone*, pointp*, bool, bool, bool, bool, bool, float);
