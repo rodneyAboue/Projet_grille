@@ -35,7 +35,7 @@ void genererGraphe(liste_polygone* lesPolygones, polygone* lePolygone){
 
 	// Création du fichier tspp.dat en supprimant une ancienne version si le fichier existe déjà
 	FILE * fichier = fopen("tspp.dat", "w");
-	fprintf(fichier ,"alpha=0.5;\n");
+	fprintf(fichier ,"alpha=0.05;\n");
 	fprintf(fichier ,"n=%d;\n",lePolygone->nbPoint);
 
 	// Mise en place des voisins
