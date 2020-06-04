@@ -69,7 +69,7 @@ int main(int argc, char* argv[]){
 		perror("fopen");
 		exit(-1);
 	}
-	else{
+	else{ // lecture des solutions
 		int nb_sommets_chemin,nb_points_couverts,id_point;
 		double longueur_chemin;
 
