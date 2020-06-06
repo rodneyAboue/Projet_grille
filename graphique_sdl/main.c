@@ -7,20 +7,45 @@
 #define WINDOW_WIDHT 1280
 #define WINDOW_HEIGHT 720
 #define NUMMENU 5
-//functions
+//TYPES
 typedef enum bool
 {
 	false,
 	true,
 }bool;
 
+typedef enum
+{
+	image_shom,
+	affichage_polygone,
+	ajout_point,
+	ajout_ligne,
+	quitter,
+	null,
+	ajout_premier_point_ligne,
+	ajout_deuxieme_point_ligne,
+}clickedStep;
+
+typedef struct $
+{
+	int red;
+	int green;
+	int blue;
+}myColor;
+
 
 /*-------------------------------*/
+/*--FUNCTIONS--------------------*/
 	bool load_shom_image(char name []);
 	bool load_fond();
 	bool load_menu();
 	void clean_all( SDL_Window *w, SDL_Renderer *r, SDL_Texture *t,SDL_Texture *t2);
 	int button_cliked();
+	bool dessine_graphique_point(int x, int y, myColor couleur);
+	int in_frame(int x, int y);
+	//dessine_graphique_point2 ne marche pas
+	bool dessine_graphique_point2(myColor couleur);
+	bool dessine_graphique_ligne(int x1, int y1 ,int x2, int y2, myColor couleur);
 /*-------------------------------*/
 
 	SDL_Window *window = NULL;
@@ -34,7 +59,11 @@ typedef enum bool
 	TTF_Font  *menuFont; 
 	SDL_Color fontBlack ={250,250,250};
 	const char menutexte[NUMMENU][20] = {"Affichage image","Affichage polygone","Ajout point", "Ajout ligne","Quitter"};
-	//int longueurTexte[0]={154,194,64};
+	myColor red={255,0,0};
+	myColor green={0,255,0};
+	myColor blue={0,0,255};
+	myColor white ={255,255,255};
+	myColor black ={0,0,0,};
 int main(int argc, char *argv[])
 {
 	//variables 
@@ -88,7 +117,7 @@ int main(int argc, char *argv[])
 	//printf("ok1\n");
 
 	
-	bool shom_image_state = false;
+	clickedStep clicked_state = null;
 	if (load_fond()==true && load_menu()== true)
 	{
 		//loading
@@ -100,6 +129,7 @@ int main(int argc, char *argv[])
 	}
 	SDL_bool running = SDL_TRUE;
 	int choice=0;
+	clickedStep choice_before=null;
 	while(running)
 	{
 		SDL_Event event;
@@ -115,7 +145,7 @@ int main(int argc, char *argv[])
 					
 					choice=button_cliked(event.button.x, event.button.y);
 					printf("Le boutton %d a ete cliqué\n", choice);
-						
+					printf("choice before %d\n",choice_before );
 					switch(choice)
 					{
 						case 1:
@@ -124,7 +154,8 @@ int main(int argc, char *argv[])
 								clean_all(window,renderer,texture,textureMenu);
 								exit(EXIT_FAILURE);
 							}
-							shom_image_state=true;
+							clicked_state=image_shom;
+							choice_before=clicked_state;
 						break;
 					
 						case 2:
@@ -138,42 +169,92 @@ int main(int argc, char *argv[])
 								exit(EXIT_FAILURE);		
 							}
 							//printf("voir suite\n");
+							clicked_state=affichage_polygone;
+							choice_before=clicked_state;
 						break;
 
 						case 3:
-							if (load_fond()==true && load_menu()== true)
+							if (clicked_state==image_shom)
 							{
-								//loading
+								if (load_fond()==true && load_menu()== true)
+								{
+									//loading
+								}
+								else
+								{
+									clean_all(window,renderer,texture,textureMenu);
+									exit(EXIT_FAILURE);		
+								}
+								//printf("voir suite\n");
+								
+								clicked_state=ajout_point;
+								choice_before=clicked_state;
+								printf("je suis dan ajout point:state %d  before %d \n",clicked_state,choice_before );
 							}
-							else
-							{
-								clean_all(window,renderer,texture,textureMenu);
-								exit(EXIT_FAILURE);		
-							}
-							//printf("voir suite\n");
+
 						break;
 
 						case 4:
-							if (load_fond()==true && load_menu()== true)
+							if (clicked_state==image_shom)
 							{
-								//loading
+								if (load_fond()==true && load_menu()== true)
+								{
+									//loading
+								}
+								else
+								{
+									clean_all(window,renderer,texture,textureMenu);
+									exit(EXIT_FAILURE);		
+								}
+								//printf("voir suite\n");
+								
+								clicked_state=ajout_ligne;
+								choice_before=clicked_state;
+								printf("state %d  before %d \n",clicked_state,choice_before );
 							}
-							else
-							{
-								clean_all(window,renderer,texture,textureMenu);
-								exit(EXIT_FAILURE);		
-							}
-							//printf("voir suite\n");
 						break;
 
 						case 5:
+							clicked_state=quitter;
+							choice_before=clicked_state;
 							running =SDL_FALSE;
+						break;
+
+						case 6:
+							//printf("state %d  before %d \n",clicked_state,choice_before );
+							if (choice_before==5)
+							{
+								printf("ok\n");
+								if(dessine_graphique_point(event.button.x, event.button.y,red)==true)
+								{
+									printf("le point a ete dessine\n");
+								}	
+								else
+								{
+									clean_all(window,renderer,texture,textureMenu);
+									exit(EXIT_FAILURE);	
+								}
+								choice_before=null;
+							}
+							/*if (choice_before==ajout_ligne)
+							{
+								if(dessine_graphique_point(event.button.x, event.button.y,red)==true)
+								{
+									printf("le point a ete dessine\n");
+								}	
+								else
+								{
+									clean_all(window,renderer,texture,textureMenu);
+									exit(EXIT_FAILURE);	
+								}
+								choice_before=null;
+							}*/
 						break;
 
 						default:
 						break;
 					}
-					
+					  
 					break;
 				case SDL_QUIT :
 					running =SDL_FALSE;
@@ -188,9 +269,7 @@ int main(int argc, char *argv[])
 	
 	// fin du programme
 	//destruction de la fenetre
-	clean_all(window,renderer,texture,textureMenu);
-	
-	
+	clean_all(window,renderer,texture,textureMenu);	
 	return 0;
 }
 /*-----------------------------------------------------------------------------*/
@@ -211,7 +290,7 @@ void clean_all( SDL_Window *w, SDL_Renderer *r, SDL_Texture *t,SDL_Texture *t2)
 	TTF_CloseFont(menuFont);
 	TTF_Quit();
 }
-
+/*-----------------------------------------------------------*/
 bool load_shom_image( char name [])
 {
 	picture = IMG_Load(name);
@@ -242,7 +321,7 @@ bool load_shom_image( char name [])
 	return true;
 }
 
-
+/*-----------------------------------------------------------*/
 bool load_fond()
 {
 	picture = IMG_Load("img/Black.jpg");
@@ -299,34 +378,70 @@ bool load_menu()
 	}
 	return true;
 }
-
+/*-----------------------------------------------------------*/
 int button_cliked(int x, int y)
 {
 	printf("<%d ,%d>\n",x,y );
 	if (x>=30 && x<=184 && y>=100 && y<=120)
 	{
-		// bouttont afficher image 
+		// boutton afficher image 
 		return 1;
-	}
+	}                        
 	if (x>=30 && x<=213 && y>=142 && y<=160)
 	{
-		// bouttont afficher polygone 
+		// boutton afficher polygone 
 		return 2;
 	}
 	if (x>=30 && x<=130 && y>=182 && y<=197)
 	{
-		// bouttont afficher polygone 
+		// boutton ajouter point 
 		return 3;
 	}
 	if (x>=30 && x<=130 && y>=224 && y<=240)
 	{
-		// bouttont afficher polygone 
+		// boutton ajouter ligne 
 		return 4;
 	}
 	if (x>=30 && x<=92 && y>=262 && y<=279)
 	{
-		// bouttont afficher polygone 
+		// boutton quitter
 		return 5;
 	}
+
+	if (x>=215 && x<=1064 && y>=90 && y<=629)
+	{
+		// boutton dans le cadre 
+		return 6;
+	}
 	return -1;
+}
+
+/*-----------------------------------------------------------*/
+bool dessine_graphique_point(int x, int y, myColor couleur)
+{
+	if (SDL_SetRenderDrawColor(renderer, couleur.red, couleur.green, couleur.blue, SDL_ALPHA_OPAQUE)!=0)
+	{
+		return false;
+	}	
+	SDL_Rect carre = { x, y, 4, 4};
+	if (SDL_RenderFillRect(renderer,&carre)!=0)
+	{
+		return false;
+	}
+	return true;
+}
+
+/*---------------------------------------------------------------*/
+bool dessine_graphique_ligne(int x1, int y1 ,int x2, int y2, myColor couleur)
+{
+	if (SDL_SetRenderDrawColor(renderer, couleur.red, couleur.green, couleur.blue, SDL_ALPHA_OPAQUE)!=0)
+	{
+		return false;
+	}	
+	
+	if (SDL_RenderDrawLine(renderer,x1,y1,x2,y2)!=0)
+	{
+		return false;
+	}
+	return true;
 }
