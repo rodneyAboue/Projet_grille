@@ -65,6 +65,7 @@ int main(int argc, char* argv[]){
 
 	//system("/opt/ibm/ILOG/CPLEX_Studio126/opl/bin/x86-64_linux/oplrun tspp.mod tspp.dat params.dat");
 
+	int x = 0;
 
 	FILE* fichier = fopen("solutions.res","r");
 
@@ -76,31 +77,58 @@ int main(int argc, char* argv[]){
 		int nb_sommets_chemin,nb_points_couverts,id_point;
 		double longueur_chemin;
 
-		liste_polygone* liste = init_liste_polygone();	
-		pointp* depart, *visites = NULL, *visites_next, *vus = NULL, *vus_next, *non_vus = NULL, *non_vus_next;
+		pointp *visites, *visites_next, *vus = NULL, *vus_next, *non_vus = NULL, *non_vus_next;
+		
+		
 
-
-		depart = extraire_polygones( "test_io_export.kml", liste);
 		puts("entree : ok\n");
 
+		// a chaque itération on lit une ligne (= une solution) du fichier solutions.res
 		while(fscanf(fichier, "%d %lf", &nb_sommets_chemin,&longueur_chemin) != EOF){
 			printf("CHEMIN :\n%d sommets\nlongueur = %f\n\n", nb_sommets_chemin,longueur_chemin);
 
-			for(int i = 1; i <= nb_sommets_chemin; i++){
+			for(int i = 0; i < nb_sommets_chemin; i++){
 				fscanf(fichier,"%d", &id_point);
 				printf("sommet %d\n", id_point);
 
-				visites_next = visites;				
-				while(visites_next != NULL){
-							
-					visites_next = visites_next->next;					
-				}
-				visites_next = listePolygone[0]->listePointPoly[i];
-				visites_next->next = NULL;
-											
+				// on ajoute le point à la liste chaînée des points visités		
+		
 								
-				listePolygone[0]->listePointPoly[i]->etat = 'x';
+
+				
+						
+				// dans la liste de points, on cherche le point ayant pour id "id_point" et définit son état comme 'visité'
+				for(int z = 0; z < listePolygone[0]->nbPoint; z++){					
+					if(listePolygone[0]->listePointPoly[z]->id == id_point)
+						listePolygone[0]->listePointPoly[z]->etat = 'x'; //'x' = sommet visité
+						
+
+						visites_next = listePolygone[0]->listePointPoly[z];
+				
+
+						if(x == 0) visites = visites_next;
+
+						visites_next = visites_next->next;
+
+						break;
+			}		}	
+
+			visites_next = visites;
+
+
+			// TEMPORAIRE. affichage de la liste des points visités
+			printf("Test de la boucle next\n");
+
+			pointp* sommetActuel = visites;
+			for(int j = 0; j <= nb_sommets_chemin; j++){
+				printf("sommet id=%d \n", sommetActuel->id);
+				sommetActuel = sommetActuel->next;
 			}
+			printf("Fin du test de la boucle next\n");
+				
+
+
+			int a = 0;
 
 			fscanf(fichier,"%d", &nb_points_couverts);
 
@@ -113,41 +141,60 @@ int main(int argc, char* argv[]){
 
 				for(int k = 0; k < listePolygone[0]->nbPoint; k++){
 					if(listePolygone[0]->listePointPoly[k]->id == id_point && listePolygone[0]->listePointPoly[k]->etat !='o' && listePolygone[0]->listePointPoly[k]->etat != 'x'){ // 'o' = "vu"    'x' = "visité"
-						vus_next = vus;				
-						while(vus_next != NULL){
-							
-							vus_next = vus_next->next;					
-						}
+						listePolygone[0]->listePointPoly[k]->etat = 'o';	
 						vus_next = listePolygone[0]->listePointPoly[k];
-						vus_next->next = NULL;
+				
+
+						if(a == 0) vus = vus_next;
+
+						vus_next = vus_next->next;
+
+
+
 											
-								
-						listePolygone[0]->listePointPoly[k]->etat = 'o';					
-					}
+										
+					
 										
 				}
 			}
 
+			vus_next = vus;
+
+
+			int b = 0;
+
 			for(int l = 0; l < listePolygone[0]->nbPoint; l++){
+
 					if(listePolygone[0]->listePointPoly[l]->id == id_point && listePolygone[0]->listePointPoly[l]->etat != 'o' && listePolygone[0]->listePointPoly[l]->etat != '.' && listePolygone[0]->listePointPoly[l]->etat != 'x'){ // '.' = "non vu"      'o' = "vu"      'x' = "visité"
+						
 						non_vus_next = non_vus;				
 						while(non_vus_next != NULL){
 							
 							non_vus_next = non_vus_next->next;					
 						}
 						non_vus_next = listePolygone[0]->listePointPoly[l];
+
+						if(b++ == 0) {non_vus = non_vus_next;}
 						non_vus_next->next = NULL;
-											
+						
+
 								
 						listePolygone[0]->listePointPoly[l]->etat = '.';					
-					}
+						
 										
-				}
-			draw_resultat(liste, visites, vus, non_vus);
+					}
+			
 
-			break; 
+			
 		}
-	}
+
+		//non_vus_next->next = non_vus;
+
+
+	}printf("xxxxx\n");
+		//draw_resultat(listeDepart, visites, vus, non_vus);
+		break;
+	}}
 
 	
 	
