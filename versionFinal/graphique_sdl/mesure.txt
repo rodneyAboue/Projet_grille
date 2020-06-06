@@ -1,0 +1,31 @@
+HG : haut gauche BG : Bas gauche HD : Haut droite BD : Bas droite
+text 1 mesure : 
+	HG <30 , 100>
+	BG <30 , 120>
+	HD <182 , 100>
+	BD <182 , 120>
+text 2 mesure :
+	HG <30 , 100>
+	BG <30 , 120>
+	HD <182 , 100>
+	BD <182 , 120>
+text 3 mesure :
+	HG <30 , 182>
+	BG <30 , 197>
+	HD <130 , 182>
+	BD <130 , 197>
+texte 4 mesure :
+	HG <30 , 263>
+	BG <30 , 280>
+	HD <130 , 224>
+	BD <130 , 240>
+texte 5 mesure :
+	HG <30 , 224>
+	BG <30 , 240>
+	HD <92 , 224>
+	BD <92 , 240>
+Grand cadre original +10 pixel pour un petit decal
+	HG <215 ,90>
+	BG <215 ,629>
+	HD <1064 ,90>
+	BD <1064 ,629>
