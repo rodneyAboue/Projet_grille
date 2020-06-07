@@ -1,8 +1,8 @@
 #include "gen_graph.h"
 
 // Variables correspondants respectivement à la portée du radar et à la distance maximale entre 2 points voisins
-#define distanceCouverture 0.005
-#define distanceVoisin 0.01
+#define distanceCouverture 0.00109
+#define distanceVoisin 0.03
 
 /*
 * Vérifie si le segment entre les points lePolygone->listePointPoly[i] et lePolygone->listePointPoly[j] croise une arrête de l'un des polygones
@@ -61,7 +61,7 @@ void genererGraphe(liste_polygone* lesPolygones, polygone* lePolygone){
 		for(int j = 0; j< lePolygone->nbPoint; j++){
 			distance = sqrtf(pow((lePolygone->listePointPoly[i]->x - lePolygone->listePointPoly[j]->x),2) + pow((lePolygone->listePointPoly[i]->y - lePolygone->listePointPoly[j]->y),2));
 			accesDirect = !intersection(lePolygone, i, j, lesPolygones);
-			if(distance <= distanceCouverture && accesDirect){
+			if(distance <= distanceCouverture && accesDirect && lePolygone->listePointPoly[j]->id != i+1){
 				fprintf(fichier, "%d, ", lePolygone->listePointPoly[j]->id);
 			}
 		}

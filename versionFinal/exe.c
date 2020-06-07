@@ -77,7 +77,7 @@ int main(int argc, char* argv[]){
 		int nb_sommets_chemin,nb_points_couverts,id_point;
 		double longueur_chemin;
 
-		pointp *visites, *visites_next, *vus = NULL, *vus_next, *non_vus = NULL, *non_vus_next;
+		pointp *visites = NULL, *visites_last, *visites_next, *vus = NULL, *vus_last,*vus_next, *non_vus = NULL, *non_vus_last, *non_vus_next;
 		
 		
 
@@ -98,42 +98,41 @@ int main(int argc, char* argv[]){
 				
 						
 				// dans la liste de points, on cherche le point ayant pour id "id_point" et définit son état comme 'visité'
-				for(int z = 0; z < listePolygone[0]->nbPoint; z++){					
-					if(listePolygone[0]->listePointPoly[z]->id == id_point)
+				for(int z = 0; z < listePolygone[0]->nbPoint; z++)					
+					if(listePolygone[0]->listePointPoly[z]->id == id_point){
+						//printf("=>sommet %d\n", id_point);
 						listePolygone[0]->listePointPoly[z]->etat = 'x'; //'x' = sommet visité
 						
-
+						// on ajoute le point à la liste chaînée des points visités
+						
+		
 						visites_next = listePolygone[0]->listePointPoly[z];
 				
 
-						if(x == 0) visites = visites_next;
+						if(x++ == 0){ 
+							visites = visites_next; 
+							visites_last = visites;
+						}
+						else{
+							visites_last->next = visites_next;
+							visites_last = visites_last->next;
+						}
 
-						visites_next = visites_next->next;
 
 						break;
 			}		}	
 
-			visites_next = visites;
-
-
-			// TEMPORAIRE. affichage de la liste des points visités
-			printf("Test de la boucle next\n");
-
-			pointp* sommetActuel = visites;
-			for(int j = 0; j <= nb_sommets_chemin; j++){
-				printf("sommet id=%d \n", sommetActuel->id);
-				sommetActuel = sommetActuel->next;
-			}
-			printf("Fin du test de la boucle next\n");
+			/*if(visites != NULL)*/ visites_last->next = NULL;
 				
 
 
-			int a = 0;
+			int a = 0;int b = 0;
 
 			fscanf(fichier,"%d", &nb_points_couverts);
 
 			printf("\nliste des %d points couverts :\n", nb_points_couverts);
 
+			printf("%d\n",nb_points_couverts);
 			for(int j = 1; j <= nb_points_couverts; j++){
 				fscanf(fichier,"%d ", &id_point);
 				printf("point couvert d'id %d\n", id_point);
@@ -141,14 +140,26 @@ int main(int argc, char* argv[]){
 
 				for(int k = 0; k < listePolygone[0]->nbPoint; k++){
 					if(listePolygone[0]->listePointPoly[k]->id == id_point && listePolygone[0]->listePointPoly[k]->etat !='o' && listePolygone[0]->listePointPoly[k]->etat != 'x'){ // 'o' = "vu"    'x' = "visité"
-						listePolygone[0]->listePointPoly[k]->etat = 'o';	
+						//printf("=>sommet %d\n", id_point);
+						listePolygone[0]->listePointPoly[k]->etat = 'o'; //'x' = sommet visité
+						
+						// on ajoute le point à la liste chaînée des points visités
+						
+		
 						vus_next = listePolygone[0]->listePointPoly[k];
 				
 
-						if(a == 0) vus = vus_next;
+						if(a++ == 0){ 
+							vus = vus_next; 
+							vus_last = vus;
+						}
+						else{
+							vus_last->next = vus_next;
+							vus_last = vus_last->next;
+						}
 
-						vus_next = vus_next->next;
 
+						break;
 
 
 											
@@ -158,28 +169,40 @@ int main(int argc, char* argv[]){
 				}
 			}
 
-			vus_next = vus;
+
+			
+			
+
+			
 
 
-			int b = 0;
+			
 
 			for(int l = 0; l < listePolygone[0]->nbPoint; l++){
 
 					if(listePolygone[0]->listePointPoly[l]->id == id_point && listePolygone[0]->listePointPoly[l]->etat != 'o' && listePolygone[0]->listePointPoly[l]->etat != '.' && listePolygone[0]->listePointPoly[l]->etat != 'x'){ // '.' = "non vu"      'o' = "vu"      'x' = "visité"
 						
-						non_vus_next = non_vus;				
-						while(non_vus_next != NULL){
-							
-							non_vus_next = non_vus_next->next;					
-						}
-						non_vus_next = listePolygone[0]->listePointPoly[l];
-
-						if(b++ == 0) {non_vus = non_vus_next;}
-						non_vus_next->next = NULL;
+						printf("=>sommet %d\n", id_point);
+						listePolygone[0]->listePointPoly[l]->etat = '.'; //'x' = sommet visité
 						
+						// on ajoute le point à la liste chaînée des points visités
+						
+		
+						non_vus_next = listePolygone[0]->listePointPoly[l];
+				
 
-								
-						listePolygone[0]->listePointPoly[l]->etat = '.';					
+						if(b++ == 0){ 
+							printf("8888888\n");
+							non_vus = non_vus_next; 
+							non_vus_last = non_vus;
+						}
+						else{
+							non_vus_last->next = non_vus_next;
+							non_vus_last = non_vus_last->next;
+						}
+
+
+						break;					
 						
 										
 					}
@@ -188,11 +211,36 @@ int main(int argc, char* argv[]){
 			
 		}
 
-		//non_vus_next->next = non_vus;
+		
 
 
-	}printf("xxxxx\n");
-		//draw_resultat(listeDepart, visites, vus, non_vus);
+		/*printf("Test de la boucle next\n");
+
+			pointp* sommetActuel = vus;
+			for(int j = 0; j <= nb_sommets_chemin; j++){
+				printf("sommet id=%d \n", sommetActuel->id);
+				sommetActuel = sommetActuel->next;
+			}
+			printf("Fin du test de la boucle next\n");*/
+
+			
+
+
+	}printf("xxxxx\n");/*if(vus != NULL)*/ vus_last->next = NULL; if(non_vus != NULL) non_vus_last->next = NULL;
+
+
+		/*printf("Test de la boucle next\n");
+
+			pointp* sommetActuel = non_vus;
+			for(int j = 0; j <= a; j++){
+				printf("sommet id=%d \n", sommetActuel->id);
+				sommetActuel = sommetActuel->next;
+			}
+			printf("Fin du test de la boucle next\n");*/
+
+		//printf("\nAAAAAAAAAA\n");
+		listeDepart->next = NULL;
+		draw_resultat(listeDepart, visites, vus, non_vus);
 		break;
 	}}
 
