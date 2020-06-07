@@ -239,9 +239,25 @@ int main(int argc, char* argv[]){
 			printf("Fin du test de la boucle next\n");*/
 
 		//printf("\nAAAAAAAAAA\n");
-		listeDepart->next = NULL;
-		draw_resultat(listeDepart, visites, vus, non_vus);
-		break;
+
+		pointp* entete_vus, *entete_visites, *entete_non_vus;
+
+        entete_vus = init_point_liste_points();
+        entete_visites = init_point_liste_points();
+        entete_non_vus = init_point_liste_points();
+
+        entete_visites->next = visites;
+        entete_vus->next = vus;
+        entete_non_vus->next = non_vus;
+
+        afficher_liste_point(entete_visites);
+        afficher_liste_point(entete_vus);
+        afficher_liste_point(entete_non_vus);
+		
+	afficher_liste_polygone(listeDepart);
+
+        draw_resultat(listeDepart, entete_visites, entete_vus, entete_non_vus);
+        break;
 	}}
 
 	
