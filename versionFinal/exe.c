@@ -250,11 +250,11 @@ int main(int argc, char* argv[]){
         entete_vus->next = vus;
         entete_non_vus->next = non_vus;
 
-        afficher_liste_point(entete_visites);
-        afficher_liste_point(entete_vus);
-        afficher_liste_point(entete_non_vus);
+       // afficher_liste_point(entete_visites);
+        //afficher_liste_point(entete_vus);
+        //afficher_liste_point(entete_non_vus);
 		
-	afficher_liste_polygone(listeDepart);
+	//afficher_liste_polygone(listeDepart);
 
         draw_resultat(listeDepart, entete_visites, entete_vus, entete_non_vus);
         break;

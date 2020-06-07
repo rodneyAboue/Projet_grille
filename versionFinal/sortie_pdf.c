@@ -96,7 +96,6 @@ void init_sortie_probleme(){
 	name ("Longitude", "x");
   	name ("Latitude", "y");
   	titlin ("PROBLEME", 1);
-  	titlin ("bleu = zone autorisee, noir = zone interdite, noir = points", 3);
 }
 
 void init_sortie_resultat(){
@@ -109,8 +108,7 @@ void init_sortie_resultat(){
 	name ("Longitude", "x");
   	name ("Latitude", "y");
   	titlin ("RESULTAT", 1);
-  	titlin("bleu = zone autorisee, noir = zone interdite", 2);
-  	titlin ("vert = visite, gris = vu, rouge = non_vu", 3);
+  	titlin ("noir = visite, gris = vu, rouge = non_vu", 3);
 }
 
 float points_non_vus_percent(pointp* liste_globale, pointp* liste_non_vus){
@@ -218,14 +216,14 @@ void draw_probleme(liste_polygone* lp, pointp* grille){
 	//dessin des polygones
 	lp=lp->next;
 	draw_polygone(lp->polygone, "blue"); //polygone englobant en bleu	
-
+	/* hs : les polygones sont invisible/tracés en blanc?
 	if(lp->next != NULL)
-		draw_liste_polygone(lp->next, "white"); //polygones interdits en noir
-
+		draw_liste_polygone(lp->next, "black"); //polygones interdits en noir
+	*/
 	
 	//dessin des points
 	hsymbl (20);
-	color("white");
+	color("black");
 	draw_liste_point( grille, 4); // points = croix noires
 	
 	title();
