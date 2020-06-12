@@ -2,7 +2,7 @@
 #include <string.h>
 #include "entree_kml.h"
 #include "dislin.h"
-
+#include "sortie_pdf.h"
 
 #define distanceVoisinCreation 0.001
 
@@ -37,7 +37,6 @@ int main(int argc, char* argv[]){
 				while(sommetEnCours->next != NULL){
 					sommetEnCours = sommetEnCours->next;
 				}
-				sommetEnCours->next = sommetDepart;
 				listePolygone = (polygone**)realloc(listePolygone, ++(nbPoly)*sizeof(polygone*));
 				listePolygone[nbPoly-1] = creerPoly(sommetDepart);
 			}
@@ -61,7 +60,11 @@ int main(int argc, char* argv[]){
 			printf("Génération impossible, point de départ en dehors du polygone \n");
 		}
 	}
-	printf("Graphe généré dans tspp.dat \n");
+
+
+	afficher_liste_polygone(listeDepart);	
+
+	printf("\nGraphe généré dans tspp.dat \n");
 
 	//system("/opt/ibm/ILOG/CPLEX_Studio126/opl/bin/x86-64_linux/oplrun tspp.mod tspp.dat params.dat");
 
@@ -81,15 +84,15 @@ int main(int argc, char* argv[]){
 		
 		
 
-		puts("entree : ok\n");
 
 		// a chaque itération on lit une ligne (= une solution) du fichier solutions.res
 		while(fscanf(fichier, "%d %lf", &nb_sommets_chemin,&longueur_chemin) != EOF){
-			printf("CHEMIN :\n%d sommets\nlongueur = %f\n\n", nb_sommets_chemin,longueur_chemin);
+			printf("\nLISTE DES %d SOMMETS DU CHEMIN DE LONGUEUR = %f :\n", nb_sommets_chemin,longueur_chemin);
 
+			
 			for(int i = 0; i < nb_sommets_chemin; i++){
 				fscanf(fichier,"%d", &id_point);
-				printf("sommet %d\n", id_point);
+				
 
 				// on ajoute le point à la liste chaînée des points visités		
 		
@@ -104,6 +107,8 @@ int main(int argc, char* argv[]){
 						listePolygone[0]->listePointPoly[z]->etat = 'x'; //'x' = sommet visité
 						
 						// on ajoute le point à la liste chaînée des points visités
+
+						printf("sommet %d   x:%f  y:%f\n", id_point, listePolygone[0]->listePointPoly[z]->x,listePolygone[0]->listePointPoly[z]->y );
 						
 		
 						visites_next = listePolygone[0]->listePointPoly[z];
@@ -122,7 +127,7 @@ int main(int argc, char* argv[]){
 						break;
 			}		}	
 
-			/*if(visites != NULL)*/ visites_last->next = NULL;
+			visites_last->next = NULL;
 				
 
 
@@ -130,22 +135,20 @@ int main(int argc, char* argv[]){
 
 			fscanf(fichier,"%d", &nb_points_couverts);
 
-			printf("\nliste des %d points couverts :\n", nb_points_couverts);
+			printf("\nLISTE DES %d POINTS COUVERTS :\n", nb_points_couverts);
 
-			printf("%d\n",nb_points_couverts);
 			for(int j = 1; j <= nb_points_couverts; j++){
 				fscanf(fichier,"%d ", &id_point);
-				printf("point couvert d'id %d\n", id_point);
+				
 
 
 				for(int k = 0; k < listePolygone[0]->nbPoint; k++){
 					if(listePolygone[0]->listePointPoly[k]->id == id_point && listePolygone[0]->listePointPoly[k]->etat !='o' && listePolygone[0]->listePointPoly[k]->etat != 'x'){ // 'o' = "vu"    'x' = "visité"
 						//printf("=>sommet %d\n", id_point);
-						listePolygone[0]->listePointPoly[k]->etat = 'o'; //'x' = sommet visité
-						
+						listePolygone[0]->listePointPoly[k]->etat = 'o'; //'o' = sommet vu						
 						// on ajoute le point à la liste chaînée des points visités
 						
-		
+						printf("point %d   x:%f y:%f\n", id_point, listePolygone[0]->listePointPoly[k]->x, listePolygone[0]->listePointPoly[k]->y);
 						vus_next = listePolygone[0]->listePointPoly[k];
 				
 
@@ -173,17 +176,14 @@ int main(int argc, char* argv[]){
 			
 			
 
-			
-
-
-			
+		
 
 			for(int l = 0; l < listePolygone[0]->nbPoint; l++){
 
 					if(listePolygone[0]->listePointPoly[l]->id == id_point && listePolygone[0]->listePointPoly[l]->etat != 'o' && listePolygone[0]->listePointPoly[l]->etat != '.' && listePolygone[0]->listePointPoly[l]->etat != 'x'){ // '.' = "non vu"      'o' = "vu"      'x' = "visité"
 						
-						printf("=>sommet %d\n", id_point);
-						listePolygone[0]->listePointPoly[l]->etat = '.'; //'x' = sommet visité
+						printf("point %d   x:%f y:%f\n", id_point, listePolygone[0]->listePointPoly[l]->x, listePolygone[0]->listePointPoly[l]->y);
+						listePolygone[0]->listePointPoly[l]->etat = '.'; //'.' = sommet non vu
 						
 						// on ajoute le point à la liste chaînée des points visités
 						
@@ -192,7 +192,6 @@ int main(int argc, char* argv[]){
 				
 
 						if(b++ == 0){ 
-							printf("8888888\n");
 							non_vus = non_vus_next; 
 							non_vus_last = non_vus;
 						}
@@ -214,31 +213,20 @@ int main(int argc, char* argv[]){
 		
 
 
-		/*printf("Test de la boucle next\n");
+	}vus_last->next = NULL; if(non_vus != NULL) non_vus_last->next = NULL;
 
-			pointp* sommetActuel = vus;
-			for(int j = 0; j <= nb_sommets_chemin; j++){
-				printf("sommet id=%d \n", sommetActuel->id);
-				sommetActuel = sommetActuel->next;
-			}
-			printf("Fin du test de la boucle next\n");*/
+		 int nb_points_non_couverts = listePolygone[0]->nbPoint - nb_points_couverts;
 
-			
+		 if(nb_points_non_couverts != 0)
+		 	printf("\nLISTE DES %d POINTS NON COUVERTS :\n", nb_points_non_couverts);
+		 else
+		 	printf("\nLA LISTE DES POINTS NON COUVERTS EST NULLE\n");
 
-
-	}printf("xxxxx\n");/*if(vus != NULL)*/ vus_last->next = NULL; if(non_vus != NULL) non_vus_last->next = NULL;
-
-
-		/*printf("Test de la boucle next\n");
-
-			pointp* sommetActuel = non_vus;
-			for(int j = 0; j <= a; j++){
-				printf("sommet id=%d \n", sommetActuel->id);
-				sommetActuel = sommetActuel->next;
-			}
-			printf("Fin du test de la boucle next\n");*/
-
-		//printf("\nAAAAAAAAAA\n");
+		 for(int h = 0; h < listePolygone[0]->nbPoint; h++){
+		 		if(listePolygone[0]->listePointPoly[h]->etat == 'i')
+		 			printf("point %d   x:%f y:%f\n", id_point, listePolygone[0]->listePointPoly[h]->x, listePolygone[0]->listePointPoly[h]->y);
+		 }
+	
 
 		pointp* entete_vus, *entete_visites, *entete_non_vus;
 
@@ -255,6 +243,44 @@ int main(int argc, char* argv[]){
         //afficher_liste_point(entete_non_vus);
 		
 	//afficher_liste_polygone(listeDepart);
+
+	pointp* l1 = init_sommet();
+	draw_probleme(listeDepart, l1);
+
+
+
+	/* 
+	TEST PERMETTANT D'AFFICHER SEULEMENT LA GRILLE DU POLYGONE ENGLOBANT
+
+	pointp *grille = NULL, *grille_last, *grille_next;int v = 0;
+	printf("TEST: DESSIN DE LA GRILLE DU POLYGONE ENGLOBANT\n");
+	for(int a = 0; a < listePolygone[0]->nbPoint; a++){		
+						printf("point %d   x:%f y:%f\n", listePolygone[0]->listePointPoly[a]->id, listePolygone[0]->listePointPoly[a]->x, listePolygone[0]->listePointPoly[a]->y);
+						
+						
+						// on ajoute le point à la liste chaînée des points visités
+						
+		
+						grille_next = listePolygone[0]->listePointPoly[a];
+				
+
+						if(v++ == 0){ 
+							grille = grille_next; 
+							grille_last = grille;
+						}
+						else{
+							grille_last->next = grille_next;
+							grille_last = grille_last->next;
+						}
+		}
+		entete_visites->next = NULL;
+		entete_vus->next = NULL;
+
+		draw_resultat(listeDepart, entete_visites, entete_vus, grille);
+
+		*/
+		
+
 
         draw_resultat(listeDepart, entete_visites, entete_vus, entete_non_vus);
         break;

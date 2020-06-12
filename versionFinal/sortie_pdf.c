@@ -108,7 +108,7 @@ void init_sortie_resultat(){
 	name ("Longitude", "x");
   	name ("Latitude", "y");
   	titlin ("RESULTAT", 1);
-  	titlin ("noir = visite, gris = vu, rouge = non_vu", 3);
+  	titlin ("vert = visite, gris = vu, rouge = non_vu", 3);
 }
 
 float points_non_vus_percent(pointp* liste_globale, pointp* liste_non_vus){
@@ -261,7 +261,7 @@ void draw_resultat(liste_polygone* lp, pointp* visites, pointp* vus, pointp* non
 	//dessin des points
 	hsymbl (20);
 	
-	draw_liste_point( visites, 4); // points visites = croix noires
+	draw_liste_point( visites, 4); // points visites = croix vertes
 	color("gray");
 	draw_liste_point(vus, 4); //points vus = croix grises
 	color("red");

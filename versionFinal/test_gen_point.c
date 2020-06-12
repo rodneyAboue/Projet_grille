@@ -1,4 +1,3 @@
-#include "gen_point.h"
 #include "gen_graph.h"
 
 
@@ -6,19 +5,19 @@ liste_polygone* polygones;
 
 int main(){
 	printf("Début des tests\n");
-	pointp * sommet1 = init_point();
+	pointp * sommet1 = init_sommet();
 	sommet1->x = 0;
 	sommet1->y = 0;
 
-	pointp * sommet2 = init_point();
+	pointp * sommet2 = init_sommet();
 	sommet2->x = 10;
 	sommet2->y = 0;
 
-	pointp * sommet3 = init_point();
+	pointp * sommet3 = init_sommet();
 	sommet3->x = 10;
 	sommet3->y = 10;
 
-	pointp * sommet4 = init_point();
+	pointp * sommet4 = init_sommet();
 	sommet4->x = 0;
 	sommet4->y = 10;
 
@@ -38,7 +37,7 @@ int main(){
 
 	printf("Test de la fonction creerPoly(pointp*)\n");
 	polygone* poly1 = creerPoly(sommet1);
-	if(poly1->sommetPoly->x == 0 && poly1->sommetPoly->y == 0 && poly1->type == 's' && poly1->nbPoint == 0){
+	if(poly1->sommetPoly->x == 0 && poly1->sommetPoly->y == 0 && poly1->nbPoint == 0){
 		printf("Test basique réussi \n");
 	}else{
 		printf("Test basique raté\n");
@@ -46,7 +45,7 @@ int main(){
 
 	printf("---------------\n");
 	printf("Test de la fonction isInside(pointp*, polygone*) \n");
-	pointp* test = init_point();
+	pointp* test = init_sommet();
 	test->x = 5;
 	test->y = 5;
 	if(isInside(test, poly1)){
@@ -104,7 +103,7 @@ int main(){
 		printf("Test basique raté\n");
 	}
 
-	genererGraphe_SECOUR(poly1);
+	//genererGraphe_SECOUR(poly1);
 
 
 

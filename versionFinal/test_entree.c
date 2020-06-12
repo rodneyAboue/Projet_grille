@@ -2,6 +2,12 @@
 #include "structure_point_polygone.h"
 
 int main(int argc,  char* argv[]){
+	if(argc < 2){
+		printf("Erreur argument: ./test_entree export.kml\n");
+		return 1;
+	}
+
+
 	liste_polygone* liste = init_liste_polygone();
 	pointp* depart;
 	depart = extraire_polygones(argv[1], liste);

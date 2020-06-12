@@ -1,6 +1,8 @@
 #include "structure_point_polygone.h"
 #include "entree_kml.h"
 #include "dislin.h"
+#include "sortie_pdf.h"
+
 
 //attention cette version n'est pas complète
 
